@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-landing_page_pmbok.py
+site_uai_odontologia_pmbok.py
 ================================================================================
-Gera um documento ABNT (python-docx) completo do projeto "Landing Page da
-Clínica Odontológica Sorriso Real", gerenciado segundo o Guia PMBOK, da
+Gera um documento ABNT (python-docx) completo do projeto "Site de Conversão da
+Clínica Odontológica Uai Odontologia", gerenciado segundo o Guia PMBOK, da
 INICIAÇÃO ao ENCERRAMENTO, com figuras em SVG (salvas em figuras/ e convertidas
 para PNG com fallback embutido via Pillow — não precisa de DLL do Cairo).
+
+Escopo do produto: página única de conversão com sete seções (hero de Implantes
+e Próteses, sobre implantes, seis tratamentos em modais, carrossel de doze
+especialistas, avaliações do Google, duas unidades com mapa e rodapé), além de
+menu móvel, animações de revelação e botão flutuante de WhatsApp.
 
 Dependências:
     pip install python-docx          # obrigatório
@@ -13,10 +18,10 @@ Dependências:
     pip install svglib reportlab     # opcional: melhor qualidade de conversão
 
 Uso:
-    python landing_page_pmbok.py
+    python site_uai_odontologia_pmbok.py
 
 Saídas:
-    Projeto_Landing_Page_Sorriso_Real_PMBOK.docx
+    Projeto_Site_Uai_Odontologia_PMBOK.docx
     figuras/figura_XX_*.svg e *.png
 
 No Word os campos (sumário/listas/página) se atualizam ao abrir; no
@@ -37,7 +42,7 @@ from docx.enum.section import WD_SECTION_START
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-NOME_ARQUIVO = "Projeto_Landing_Page_Sorriso_Real_PMBOK.docx"
+NOME_ARQUIVO = "Projeto_Site_Uai_Odontologia_PMBOK.docx"
 DIR_FIGURAS = Path("figuras")
 XML_SPACE = "{http://www.w3.org/XML/1998/namespace}space"
 PRETO = RGBColor(0x00, 0x00, 0x00)
@@ -556,51 +561,56 @@ def svg_matriz_stakeholders():
     p.append(_txt(x0 + pw, y0 + ph + 38, "INTERESSE →", 12, "#333333", "end", "bold"))
     p.append(_txt(x0 - 10, y0 - 14, "PODER ↑", 12, "#333333", "start", "bold"))
     interessados = [
-        ("Proprietária", 9.0, 8.8),
-        ("Recepção", 8.0, 5.2),
-        ("Pacientes atuais", 7.0, 2.2),
-        ("Pacientes potenciais", 9.2, 1.6),
-        ("Agência de mídia", 5.0, 5.6),
-        ("CRO-SC", 3.0, 6.4),
-        ("Hospedagem", 2.0, 3.0),
+        ("Sócio-proprietário", 9.2, 9.0),
+        ("Equipe de dentistas", 7.4, 6.4),
+        ("Recepção das unidades", 8.2, 4.4),
+        ("Pacientes atuais", 6.8, 2.0),
+        ("Pacientes potenciais", 9.4, 1.4),
+        ("Agência de mídia", 4.8, 5.4),
+        ("CRO-SP", 2.8, 6.8),
+        ("Google (avaliações)", 4.2, 2.6),
+        ("Hospedagem e domínio", 1.6, 3.0),
     ]
     for nome, i_, p_ in interessados:
         cx = x0 + i_ / 10 * pw
         cy = y0 + ph - p_ / 10 * ph
         p.append(_circle(cx, cy, 6.5, "#1d4d7a", stroke="#ffffff", sw=1.5))
         if i_ >= 5:
-            p.append(_txt(cx - 10, cy + 4, nome, 11, "#222222", "end"))
+            p.append(_txt(cx - 10, cy + 4, nome, 10.5, "#222222", "end"))
         else:
-            p.append(_txt(cx + 10, cy + 4, nome, 11, "#222222", "start"))
+            p.append(_txt(cx + 10, cy + 4, nome, 10.5, "#222222", "start"))
     p.append("</svg>")
     return "".join(p)
 
 
 def svg_eap():
     grupos = [
-        ("1 Gestão do Projeto", ["1.1 Briefing e termo de abertura",
+        ("1 Gestão do projeto", ["1.1 Briefing e termo de abertura",
                                  "1.2 Gerenciamento e controle",
                                  "1.3 Encerramento e transição"]),
-        ("2 Descoberta", ["2.1 Entrevistas e concorrência",
+        ("2 Descoberta", ["2.1 Benchmark e entrevistas",
                           "2.2 Personas e jornada"]),
-        ("3 UX/UI", ["3.1 Wireframes e arquitetura",
+        ("3 UX/UI", ["3.1 Arquitetura das 7 seções",
                      "3.2 Design de alta fidelidade"]),
-        ("4 Desenvolvimento", ["4.1 Front-end responsivo",
-                               "4.2 CMS, formulários e CRM"]),
-        ("5 Conteúdo", ["5.1 Copywriting",
-                        "5.2 Ensaio fotográfico"]),
+        ("4 Front-end", ["4.1 Hero, sobre implantes e cards",
+                         "4.2 Modais dos seis tratamentos",
+                         "4.3 Carrosséis de equipe e avaliações",
+                         "4.4 Unidades, mapas e rodapé",
+                         "4.5 Menu móvel e botão flutuante"]),
+        ("5 Conteúdo e foto", ["5.1 Copywriting das seções",
+                               "5.2 Ensaio fotográfico da equipe"]),
         ("6 Lançamento", ["6.1 SEO e performance",
                           "6.2 Testes e go-live"]),
     ]
-    cw, pad, gap = 5.9, 18, 26
+    cw, pad, gap = 5.7, 18, 24
     larguras = [max([len(t) + 2] + [len(f) + 3 for f in fs]) * cw + pad for t, fs in grupos]
     W = sum(larguras) + gap * (len(grupos) - 1) + 40
     max_folhas = max(len(fs) for _, fs in grupos)
     H = 160 + max_folhas * 38 + 14
     p = [_svg_open(W, H), _rect(0, 0, W, H, "#ffffff")]
     cx_root = W / 2
-    p.append(_rect(cx_root - 190, 24, 380, 40, "#1d4d7a", rx=6))
-    p.append(_txt(cx_root, 49, "LANDING PAGE — CLÍNICA ODONTOLÓGICA SORRISO REAL", 13, "#ffffff", peso="bold"))
+    p.append(_rect(cx_root - 215, 24, 430, 40, "#1d4d7a", rx=6))
+    p.append(_txt(cx_root, 49, "SITE DE CONVERSÃO — UAI ODONTOLOGIA", 13, "#ffffff", peso="bold"))
     col_x = 20
     centros = []
     for w_ in larguras:
@@ -620,7 +630,7 @@ def svg_eap():
             p.append(_line(cx, y + 14, x + 16, y + 14, "#3b6ea5", 1.5))
             p.append(_rect(x + 16, y, larguras[idx] - 16, 28, "#e4edf8", rx=4,
                            stroke="#3b6ea5", sw=1))
-            p.append(_txt(x + 16 + (larguras[idx] - 16) / 2, y + 18.5, folha, 10.5, "#17334d"))
+            p.append(_txt(x + 16 + (larguras[idx] - 16) / 2, y + 18.5, folha, 10, "#17334d"))
             y += 38
     p.append("</svg>")
     return "".join(p)
@@ -629,27 +639,31 @@ def svg_eap():
 def svg_gantt():
     tarefas = [
         ("1.1", "Briefing e termo de abertura", 1, 1, "G"),
-        ("1.2", "Gerenciamento e reuniões de status", 1, 10, "G"),
-        ("1.3", "Encerramento e transição", 10, 1, "G"),
-        ("2.1", "Entrevistas e concorrência", 1, 2, "D"),
-        ("2.2", "Personas e jornada do paciente", 2, 2, "D"),
-        ("M1", "Marco — Aprovação da estratégia (21/03)", 3, None, "X"),
-        ("3.1", "Wireframes e arquitetura", 3, 2, "U"),
-        ("3.2", "Design de alta fidelidade", 4, 3, "U"),
-        ("M2", "Marco — Aprovação do design (11/04)", 6, None, "X"),
-        ("4.1", "Desenvolvimento front-end", 6, 3, "F"),
-        ("4.2", "CMS, formulários e integração ao CRM", 8, 2, "F"),
-        ("5.1", "Copywriting e conteúdo", 5, 3, "C"),
-        ("5.2", "Ensaio fotográfico", 6, 1, "C"),
-        ("6.1", "SEO, performance e acessibilidade", 8, 2, "S"),
-        ("6.2", "Testes, QA e publicação", 9, 1, "T"),
-        ("M3", "Marco — Go-live (02/05/2025)", 9, None, "X"),
+        ("1.2", "Gerenciamento e reuniões de status", 1, 12, "G"),
+        ("1.3", "Encerramento e transição", 12, 1, "G"),
+        ("2.1", "Benchmark e entrevistas com a equipe", 1, 2, "D"),
+        ("2.2", "Personas, jornada e proposta de valor", 2, 2, "D"),
+        ("M1", "Marco — Aprovação da estratégia (20/03)", 3, None, "X"),
+        ("3.1", "Arquitetura das sete seções e wireframes", 3, 2, "U"),
+        ("3.2", "Design de alta fidelidade (desktop e mobile)", 4, 3, "U"),
+        ("3.3", "Design dos modais e dos cartões da equipe", 5, 2, "U"),
+        ("M2", "Marco — Aprovação do design (17/04)", 7, None, "X"),
+        ("4.1", "Front-end: hero, sobre implantes e cards", 6, 2, "F"),
+        ("4.2", "Front-end: modais dos seis tratamentos", 7, 2, "F"),
+        ("4.3", "Front-end: carrosséis de equipe e avaliações", 7, 2, "F"),
+        ("4.4", "Front-end: unidades, mapas e rodapé", 8, 2, "F"),
+        ("4.5", "Menu móvel, animações e botão flutuante", 9, 1, "F"),
+        ("5.1", "Copywriting das seções e dos seis modais", 4, 4, "C"),
+        ("5.2", "Ensaio fotográfico da equipe (12 profissionais)", 6, 2, "C"),
+        ("6.1", "SEO on-page, performance e acessibilidade", 9, 2, "S"),
+        ("6.2", "Testes, QA e publicação", 10, 2, "T"),
+        ("M3", "Marco — Go-live (15/05/2026)", 11, None, "X"),
     ]
     cores = {"G": "#3b6ea5", "D": "#7a5ea8", "U": "#e07b39", "F": "#2e5d34",
              "C": "#b5651d", "S": "#7a9e3b", "T": "#c0504d", "X": "#8a2f2b"}
     cor_m = cores["X"]
     cx0, cw = 268, 606
-    ww = cw / 10
+    ww = cw / 12
     row_y0, rh = 64, 25
     H = row_y0 + len(tarefas) * rh + 78
     W = cx0 + cw + 16
@@ -657,16 +671,16 @@ def svg_gantt():
     for idx in range(len(tarefas)):
         if idx % 2 == 0:
             p.append(_rect(cx0, row_y0 + idx * rh, cw, rh, "#f6f6f3"))
-    for b in (0, 4, 8, 10):  # limites de mês: mar | abr | mai
+    for b in (0, 4, 8, 12):  # limites de mês: mar | abr | mai
         x = cx0 + b * ww
         p.append(_line(x, 48, x, row_y0 + len(tarefas) * rh + 6, "#dddddd", 1))
-    for centro_semana, nome in ((2, "Mar"), (6, "Abr"), (9, "Mai")):
-        p.append(_txt(cx0 + centro_semana * ww, 38, nome, 11.5, "#333333", peso="bold"))
+    for centro_mes, nome in ((2, "Mar"), (6, "Abr"), (10, "Mai")):
+        p.append(_txt(cx0 + centro_mes * ww, 38, nome, 11.5, "#333333", peso="bold"))
     p.append(_line(cx0, 48, cx0 + cw, 48, "#999999", 1.2))
     for idx, (cod, nome, inicio, dur, tipo) in enumerate(tarefas):
         y = row_y0 + idx * rh
         p.append(_txt(8, y + 16.5, cod, 10.5, cores[tipo], "start", "bold"))
-        p.append(_txt(48, y + 16.5, nome, 10.5, "#222222", "start"))
+        p.append(_txt(48, y + 16.5, nome, 10, "#222222", "start"))
         if tipo == "X":
             cx, cy = cx0 + inicio * ww, y + rh / 2
             p.append(f'<polygon points="{cx:.1f},{cy - 8:.1f} {cx + 8:.1f},{cy:.1f} '
@@ -678,7 +692,7 @@ def svg_gantt():
             rot = "contínuo" if dur >= 10 else f"{dur} sem"
             p.append(_txt(bx + bw + 5, y + 16, rot, 9, "#555555", "start"))
     itens_legenda = [("G", "Gestão do projeto"), ("D", "Descoberta"), ("U", "UX/UI"),
-                     ("F", "Desenvolvimento"), ("C", "Conteúdo"), ("S", "Lançamento/SEO"),
+                     ("F", "Front-end"), ("C", "Conteúdo"), ("S", "Lançamento/SEO"),
                      ("X", "Marco")]
     ly = row_y0 + len(tarefas) * rh + 22
     for i, (t_, nome_) in enumerate(itens_legenda):
@@ -694,7 +708,7 @@ def svg_matriz_riscos():
     cel, gx, gy = 76, 100, 64
     W, H = gx + 5 * cel + 40, gy + 5 * cel + 118
     riscos = [("R1", 4, 3), ("R2", 4, 2), ("R3", 2, 4),
-              ("R4", 2, 5), ("R5", 1, 4), ("R6", 2, 3)]
+              ("R4", 2, 5), ("R5", 3, 3), ("R6", 1, 4)]
     p = [_svg_open(W, H), _rect(0, 0, W, H, "#ffffff")]
     for imp in range(1, 6):
         for prob in range(1, 6):
@@ -737,32 +751,33 @@ def svg_curva_s():
     W, H = 840, 470
     x0, y0, pw, ph = 84, 44, 690, 340
     y1 = y0 + ph
-    PV = [2.5, 4.5, 7.0, 9.0, 11.5, 13.5, 15.5, 17.2, 18.5, 19.25]
-    EV = [2.3, 4.2, 6.5, 8.2, 10.5, 12.4, 14.6, 16.6, 18.2, 19.25]
-    AC = [2.5, 4.6, 7.2, 9.5, 12.0, 14.2, 16.0, 17.6, 18.6, 19.10]
-    ymax = 20
+    PV = [1.0, 3.0, 5.5, 8.5, 11.5, 13.9, 16.4, 19.0, 22.0, 25.2, 27.6, 29.92]
+    EV = [0.9, 2.7, 5.0, 7.6, 10.3, 12.6, 15.1, 17.6, 20.4, 23.5, 26.5, 29.92]
+    AC = [1.2, 3.3, 6.1, 9.2, 12.6, 15.4, 17.3, 19.6, 22.2, 25.0, 27.9, 29.70]
+    ymax = 32
 
     def X(i):
-        return x0 + i / 9 * pw
+        return x0 + i / 11 * pw
 
     def Y(v):
         return y1 - v / ymax * ph
 
     p = [_svg_open(W, H), _rect(0, 0, W, H, "#ffffff")]
-    for v in range(0, 21, 5):
+    for v in range(0, 31, 5):
         p.append(_line(x0, Y(v), x0 + pw, Y(v), "#e2e2e2", 1))
         p.append(_txt(x0 - 10, Y(v) + 4, str(v), 10.5, "#555555", "end"))
     p.append(_txt(x0 - 58, y0 + 4, "R$ mil", 10, "#555555"))
-    for semana, rotulo in ((0, "Sem 1"), (2, "Sem 3"), (4, "Sem 5"), (6, "Sem 7"), (8, "Sem 9")):
+    for semana, rotulo in ((0, "Sem 1"), (2, "Sem 3"), (4, "Sem 5"),
+                           (6, "Sem 7"), (8, "Sem 9"), (10, "Sem 11")):
         p.append(_txt(X(semana), y1 + 20, rotulo, 11, "#333333"))
     p.append(_line(x0, y1, x0 + pw, y1, "#999999", 1.2))
     p.append(_line(x0, y0 - 6, x0, y1, "#999999", 1.2))
-    p.append(_txt(x0 + pw / 2, y1 + 44, "Semanas de 2025 (março a maio)", 11.5, "#333333"))
-    p.append(_line(x0, Y(19.25), x0 + pw, Y(19.25), "#aaaaaa", 1, dash="6,5"))
-    p.append(_txt(x0 + 8, Y(19.25) - 6, "BAC = R$ 19.250", 10, "#666666", "start"))
-    xd = X(5)
+    p.append(_txt(x0 + pw / 2, y1 + 44, "Semanas de 2026 (março a maio)", 11.5, "#333333"))
+    p.append(_line(x0, Y(29.92), x0 + pw, Y(29.92), "#aaaaaa", 1, dash="6,5"))
+    p.append(_txt(x0 + 8, Y(29.92) - 6, "BAC = R$ 29.920", 10, "#666666", "start"))
+    xd = X(6)
     p.append(_line(xd, y0 - 6, xd, y1, "#777777", 1.2, dash="5,5"))
-    p.append(_txt(xd + 8, y0 + 4, "data de dados (11/04/2025)", 10, "#555555", "start", italico=True))
+    p.append(_txt(xd + 8, y0 + 4, "data de dados (17/04/2026)", 10, "#555555", "start", italico=True))
     series = [("PV — planejado", PV, "#1d4d7a"),
               ("EV — valor agregado", EV, "#7a5ea8"),
               ("AC — custo real", AC, "#c0504d")]
@@ -782,33 +797,42 @@ def svg_curva_s():
 # ==============================================================================
 # CONTEÚDO DO DOCUMENTO
 # ==============================================================================
-RESUMO = ("Este documento apresenta o planejamento e a gestão do projeto Landing Page "
-          "da Clínica Odontológica Sorriso Real, iniciativa digital voltada a converter "
-          "visitantes em pacientes agendados. A iniciativa foi estruturada segundo as "
-          "boas práticas do Guia PMBOK (PMI, 2017), percorrendo os cinco grupos de "
-          "processos — iniciação, planejamento, execução, monitoramento e controle e "
-          "encerramento — e as dez áreas de conhecimento. Na iniciação, formalizou-se o "
-          "termo de abertura e a matriz de interessados; no planejamento, elaboraram-se "
-          "a declaração de escopo, a estrutura analítica do projeto, o cronograma de 10 "
-          "semanas, o orçamento de R$ 19.250,00 e os planos de qualidade, comunicações "
-          "e riscos, com atenção à LGPD e às normas de publicidade odontológica; na "
-          "execução, conduziram-se descoberta, design, desenvolvimento e conteúdo; no "
-          "monitoramento, aplicou-se o gerenciamento de valor agregado para corrigir "
-          "desvios de prazo e custo; e, no encerramento, formalizou-se o aceite, a "
-          "transição e as lições aprendidas. Como resultado, espera-se publicar a página "
-          "em 02/05/2025 com pontuação Lighthouse igual ou superior a 90 e ampliar em "
-          "30% os agendamentos digitais da clínica em 90 dias.")
+RESUMO = ("Este documento apresenta o planejamento e a gestão do projeto do site de "
+          "conversão da Clínica Odontológica Uai Odontologia, página única voltada a "
+          "converter visitantes em pacientes agendados nas duas unidades da clínica, "
+          "em Barueri (SP). A iniciativa foi estruturada segundo as boas práticas do "
+          "Guia PMBOK (PMI, 2017), percorrendo os cinco grupos de processos — iniciação, "
+          "planejamento, execução, monitoramento e controle e encerramento — e as dez "
+          "áreas de conhecimento. Na iniciação, formalizaram-se o termo de abertura e a "
+          "matriz de interessados; no planejamento, elaboraram-se a declaração de "
+          "escopo, a estrutura analítica do projeto, o cronograma de 12 semanas, o "
+          "orçamento de R$ 29.920,00 e os planos de qualidade, comunicações e riscos, "
+          "com atenção à LGPD, aos direitos de imagem e às normas de publicidade "
+          "odontológica; na execução, conduziram-se descoberta, design, desenvolvimento "
+          "front-end, conteúdo e produção fotográfica da equipe; no monitoramento, "
+          "aplicou-se o gerenciamento de valor agregado para corrigir desvios de prazo "
+          "e custo; e, no encerramento, formalizaram-se o aceite, a transição e as lições "
+          "aprendidas. O produto abrange sete seções — hero de Implantes e Próteses, "
+          "conteúdo educativo, seis tratamentos em modais, carrossel de doze "
+          "especialistas, avaliações do Google, duas unidades com mapa e rodapé — além "
+          "de menu móvel, animações de revelação e botão flutuante de WhatsApp. Como "
+          "resultado, espera-se publicar a página em 15/05/2026 com pontuação Lighthouse "
+          "igual ou superior a 90 e ampliar em 30% os agendamentos digitais em 90 dias.")
 
-ABSTRACT = ("This document presents the planning and management of the Landing Page "
-            "Project for the Sorriso Real Dental Clinic, a digital initiative aimed at "
-            "converting visitors into booked patients. The work is structured according "
-            "to the PMBOK Guide best practices, covering the five process groups and the "
-            "ten knowledge areas. Deliverables include the project charter, the work "
-            "breakdown structure, a 10-week schedule, a BRL 19,250 budget, and quality, "
-            "communications and risk plans, with attention to data-protection and "
-            "dental-advertising regulations. Earned value management supported "
-            "corrective actions, and the project was formally closed with stakeholder "
-            "acceptance and lessons learned.")
+ABSTRACT = ("This document presents the planning and management of the conversion "
+            "website project for the Uai Odontologia Dental Clinic, a single-page site "
+            "designed to turn visitors into booked patients at both clinic branches in "
+            "Barueri, Brazil. The work follows PMBOK Guide best practices across the "
+            "five process groups and the ten knowledge areas. Deliverables include the "
+            "project charter, the work breakdown structure, a 12-week schedule, a "
+            "BRL 29,920 budget, and quality, communications and risk plans, with "
+            "attention to data-protection, image-rights and dental-advertising rules. "
+            "The product covers seven sections: an implant and prosthesis hero, "
+            "educational content, six treatment modals, a twelve-specialist carousel, "
+            "Google reviews, two branches with embedded maps and a footer, plus a mobile "
+            "menu, reveal animations and a floating WhatsApp button. Earned value "
+            "management supported corrective actions, and the project was formally "
+            "closed with stakeholder acceptance and lessons learned.")
 
 
 def capa(doc):
@@ -817,18 +841,18 @@ def capa(doc):
     linha_vazia(doc, 1)
     centro(doc, "MARIA ALVES DA SILVA")
     linha_vazia(doc, 5)
-    centro(doc, "LANDING PAGE DA CLÍNICA ODONTOLÓGICA SORRISO REAL", negrito=True)
+    centro(doc, "SITE DE CONVERSÃO DA CLÍNICA ODONTOLÓGICA UAI ODONTOLOGIA", negrito=True)
     centro(doc, "Gerenciamento segundo o Guia PMBOK: da iniciação ao encerramento")
     linha_vazia(doc, 12)
     centro(doc, "Blumenau – SC")
-    centro(doc, "2025")
+    centro(doc, "2026")
 
 
 def folha_de_rosto(doc):
     linha_vazia(doc, 2)
     centro(doc, "MARIA ALVES DA SILVA")
     linha_vazia(doc, 4)
-    centro(doc, "LANDING PAGE DA CLÍNICA ODONTOLÓGICA SORRISO REAL", negrito=True)
+    centro(doc, "SITE DE CONVERSÃO DA CLÍNICA ODONTOLÓGICA UAI ODONTOLOGIA", negrito=True)
     centro(doc, "Gerenciamento segundo o Guia PMBOK: da iniciação ao encerramento")
     linha_vazia(doc, 4)
     par = doc.add_paragraph()
@@ -844,7 +868,7 @@ def folha_de_rosto(doc):
     par2.add_run("Orientadora: Profa. Dra. Ana Beatriz Rocha")
     linha_vazia(doc, 8)
     centro(doc, "Blumenau – SC")
-    centro(doc, "2025")
+    centro(doc, "2026")
 
 
 def pre_textual(doc):
@@ -854,7 +878,8 @@ def pre_textual(doc):
     pk = doc.add_paragraph()
     pk.paragraph_format.first_line_indent = Cm(0)
     pk.add_run("Palavras-chave: ").bold = True
-    pk.add_run("gerenciamento de projetos; PMBOK; landing page; experiência do usuário; clínica odontológica.")
+    pk.add_run("gerenciamento de projetos; PMBOK; site de conversão; experiência do "
+               "usuário; clínica odontológica.")
 
     titulo_secao(doc, "ABSTRACT")
     paragrafo(doc, ABSTRACT, recuo=False)
@@ -862,7 +887,7 @@ def pre_textual(doc):
     kw = doc.add_paragraph()
     kw.paragraph_format.first_line_indent = Cm(0)
     kw.add_run("Keywords: ").bold = True
-    kw.add_run("project management; PMBOK; landing page; user experience; dental clinic.")
+    kw.add_run("project management; PMBOK; conversion website; user experience; dental clinic.")
 
     titulo_secao(doc, "LISTA DE FIGURAS")
     add_toc(doc, 'TOC \\h \\z \\c "Figura"',
@@ -881,17 +906,27 @@ def pre_textual(doc):
 def introducao(doc):
     secao(doc, 1, "1 INTRODUÇÃO")
     paragrafo(doc, "A decisão de contratar serviços de saúde começa, hoje, na busca "
-        "digital: pacientes pesquisam no Google, comparam avaliações e avaliam o site "
-        "da clínica em segundos antes de agendar. Para clínicas de pequeno porte, "
-        "páginas institucionais genéricas convertem mal — o visitante chega, não "
-        "encontra um caminho claro de agendamento e abandona a navegação, desperdiçando "
-        "o investimento feito em mídia paga.")
-    paragrafo(doc, "Este trabalho apresenta o projeto Landing Page da Clínica "
-        "Odontológica Sorriso Real, que desenvolve e publica uma página responsiva "
-        "focada em conversão: proposta de valor, prova social, formulário integrado ao "
-        "CRM da clínica, botão de WhatsApp e métricas de rastreamento. O prazo de "
-        "execução é de 10 semanas (3 de março a 9 de maio de 2025, com encerramento "
-        "administrativo até 16/05) e o orçamento aprovado é de R$ 19.250,00.")
+        "digital: pacientes pesquisam no Google, comparam avaliações e julgam o site "
+        "da clínica em segundos antes de agendar. Para clínicas com duas unidades em "
+        "operação, a página institucional genérica converte mal — o visitante chega, "
+        "não reconhece a especialidade que resolve o seu problema, não encontra a "
+        "unidade mais próxima e abandona a navegação, desperdiçando o investimento em "
+        "mídia paga.")
+    paragrafo(doc, "Este trabalho apresenta o projeto do site de conversão da Clínica "
+        "Odontológica Uai Odontologia, que desenvolve e publica uma página única "
+        "responsiva, com identidade própria e foco em agendamento. O produto é composto "
+        "por sete seções: hero com o tratamento em destaque (Implantes e Próteses), "
+        "bloco educativo sobre implantes e próteses dentárias, grade com seis "
+        "tratamentos abertos em janelas modais, carrossel com doze especialistas e "
+        "respectivos registros no CRO, prova social com avaliações do Google, cards das "
+        "duas unidades com mapa incorporado e telefone, e rodapé institucional. "
+        "Complementam a página o menu móvel recolhível, as animações de revelação por "
+        "rolagem e o botão flutuante de WhatsApp, presente em todas as seções.")
+    paragrafo(doc, "O prazo de execução é de 12 semanas (2 de março a 22 de maio de "
+        "2026, com encerramento administrativo na última semana) e o orçamento aprovado "
+        "é de R$ 29.920,00. O produto é estático — HTML, folha de estilo utilitária, "
+        "biblioteca de ícones, biblioteca de carrossel e fontes web —, hospedado em "
+        "domínio próprio com certificado SSL.")
     paragrafo(doc, "Segundo o Project Management Institute, um projeto é um esforço "
         "temporário empreendido para criar um produto, serviço ou resultado único "
         "(PMI, 2017). A disciplina aplicada neste caso fundamenta-se no Guia PMBOK, "
@@ -919,18 +954,21 @@ def introducao(doc):
 def objetivos(doc):
     secao(doc, 1, "2 OBJETIVOS")
     secao(doc, 2, "2.1 Objetivo geral")
-    paragrafo(doc, "Planejar, projetar e publicar, em 10 semanas, uma landing page "
-        "responsiva para a Clínica Odontológica Sorriso Real, integrada ao CRM e às "
-        "normas aplicáveis, dentro do orçamento aprovado de R$ 19.250,00, para converter "
-        "visitantes em pacientes agendados.")
+    paragrafo(doc, "Planejar, projetar e publicar, em 12 semanas, o site de conversão "
+        "da Clínica Odontológica Uai Odontologia — página única com sete seções, "
+        "integrada aos canais de contato das duas unidades e às normas aplicáveis, "
+        "dentro do orçamento aprovado de R$ 29.920,00, para converter visitantes em "
+        "pacientes agendados.")
     secao(doc, 2, "2.2 Objetivos específicos")
     for item in [
         "estabelecer linhas de base de escopo, prazo e custo e mantê-las sob controle integrado de mudanças;",
-        "aprovar personas, wireframes e design de alta fidelidade até 11/04/2025;",
-        "publicar a página em 02/05/2025 com pontuação Lighthouse igual ou superior a 90 nas quatro categorias;",
-        "integrar formulário e WhatsApp ao CRM, com o lead disponível para a recepção em menos de 1 minuto;",
-        "garantir conformidade com a LGPD (BRASIL, 2018) e com a Resolução CFO-159/2016 (CFO, 2016);",
-        "treinar a recepção e encerrar o projeto com aceite formal até 16/05/2025;",
+        "aprovar a arquitetura das sete seções, os wireframes e o design de alta fidelidade até 17/04/2026;",
+        "publicar a página em 15/05/2026 com pontuação Lighthouse igual ou superior a 90 nas quatro categorias;",
+        "entregar os seis modais de tratamento e o carrossel com os doze especialistas, com registro no CRO visível;",
+        "configurar deep links de WhatsApp por unidade, com mensagem pré-preenchida e rastreamento de cliques;",
+        "incorporar os mapas das duas unidades e o bloco com as avaliações do Google;",
+        "garantir conformidade com a LGPD (BRASIL, 2018), com os direitos de imagem da equipe e com a Resolução CFO-159/2016 (CFO, 2016);",
+        "treinar a recepção das duas unidades e encerrar o projeto com aceite formal até 22/05/2026;",
         "contribuir para o aumento de 30% nos agendamentos digitais em 90 dias (KPI pós-projeto).",
     ]:
         marcador(doc, item)
@@ -938,22 +976,24 @@ def objetivos(doc):
 
 def justificativa(doc):
     secao(doc, 1, "3 JUSTIFICATIVA")
-    paragrafo(doc, "A clínica capta pacientes quase exclusivamente por indicação e "
-        "pelo perfil no Google Meu Negócio; a agenda de terças e quartas opera ociosa, "
-        "enquanto o investimento em anúncios encaminha visitantes para um site "
-        "institucional sem foco de conversão. Uma landing page dedicada concentra a "
-        "atenção do visitante em um único objetivo — agendar a primeira consulta — e "
-        "torna o retorno da mídia paga mensurável.")
-    paragrafo(doc, "Do ponto de vista de experiência, os princípios de usabilidade "
-        "consagrados por Krug (2015) — clareza da proposta, hierarquia visual e mínimo "
-        "esforço de decisão — orientam o desenho da página, enquanto as diretrizes "
-        "técnico-gerenciais de Kerzner (2017) sustentam a disciplina de execução. A "
-        "combinação entre boas práticas de gerenciamento e de design é o que garante "
-        "que o produto final converta, e não apenas exista.")
-    paragrafo(doc, "No plano institucional, o projeto permite à proprietária medir o "
-        "custo por lead, reduzir o tempo de resposta ao paciente (integração com CRM e "
-        "WhatsApp) e servir de base para futuras páginas por especialidade, como "
-        "implante e ortodontia, em uma arquitetura digital escalável.")
+    paragrafo(doc, "A clínica capta pacientes quase exclusivamente por indicação e pelo "
+        "perfil no Google Meu Negócio; a agenda de terças e quartas opera ociosa nas "
+        "duas unidades, enquanto o investimento em anúncios encaminha visitantes para "
+        "um site institucional sem foco de conversão. Uma página dedicada concentra a "
+        "atenção do visitante em um único objetivo — agendar a primeira consulta —, "
+        "explicita o tratamento em destaque e torna o retorno da mídia paga mensurável.")
+    paragrafo(doc, "A escolha de apresentar implantes e próteses como tratamento de "
+        "abertura não é arbitrária: são os procedimentos de maior ticket e maior "
+        "impacto na autoestima do paciente, e a clínica conta com especialistas "
+        "dedicados a eles. O bloco educativo da página reduz o medo do procedimento "
+        "antes do primeiro contato, alinhando-se aos princípios de usabilidade de Krug "
+        "(2015) — clareza da proposta, hierarquia visual e mínimo esforço de decisão — "
+        "e à disciplina de execução descrita por Kerzner (2017).")
+    paragrafo(doc, "Do ponto de vista operacional, a página distribui a demanda entre "
+        "as duas unidades por deep link de WhatsApp específico, evita que a recepção "
+        "pergunte a cidade de origem do paciente e permite medir cliques por seção. No "
+        "plano institucional, serve de base para futuras páginas por especialidade, em "
+        "arquitetura digital escalável.")
 
 
 def iniciacao(doc):
@@ -967,90 +1007,107 @@ def iniciacao(doc):
     paragrafo(doc, "O termo de abertura do projeto (TAP) autoriza formalmente a "
         "existência do projeto e confere ao gerente autoridade para aplicar recursos. "
         "Os elementos centrais do TAP são apresentados a seguir.")
-    paragrafo_rotulo(doc, "Nome do projeto:", "Landing Page da Clínica Odontológica Sorriso Real.")
-    paragrafo_rotulo(doc, "Patrocinadora:", "Dra. Helena Prado, proprietária da clínica.")
+    paragrafo_rotulo(doc, "Nome do projeto:", "Site de conversão da Clínica "
+        "Odontológica Uai Odontologia.")
+    paragrafo_rotulo(doc, "Patrocinadora:", "Dra. Giovana Tomé, sócia-proprietária da "
+        "clínica.")
     paragrafo_rotulo(doc, "Gerente do projeto:", "Maria Alves da Silva, designada em "
-        "05/03/2025, com autoridade para aprovar mudanças de até R$ 1.000,00 e "
+        "04/03/2026, com autoridade para aprovar mudanças de até R$ 1.000,00 e "
         "contratar os serviços previstos no orçamento.")
     paragrafo_rotulo(doc, "Justificativa:", "sem página de conversão, o investimento em "
-        "mídia paga desperdiça alcance; a página dedicada aumenta o volume e a "
-        "qualidade dos leads e permite mensurar o retorno da comunicação digital.")
-    paragrafo_rotulo(doc, "Objetivos e critérios de sucesso:", "publicar em 02/05/2025 "
-        "uma página com Lighthouse igual ou superior a 90, formulário integrado ao CRM "
-        "testado ponta a ponta, custo final igual ou inferior a R$ 19.250,00, "
-        "satisfação da patrocinadora igual ou superior a 8/10 e conformidade LGPD/CRO.")
-    paragrafo_rotulo(doc, "Escopo preliminar:", "descoberta e personas, UX/UI, "
-        "desenvolvimento front-end, integrações, conteúdo e fotografia, SEO técnico, "
-        "testes, go-live e treinamento da recepção.")
-    paragrafo_rotulo(doc, "Orçamento sumário:", "R$ 19.250,00, recursos próprios da "
+        "mídia paga desperdiça alcance e a demanda não é distribuída entre as unidades; "
+        "a página dedicada aumenta o volume e a qualidade dos leads e permite mensurar "
+        "o retorno da comunicação digital.")
+    paragrafo_rotulo(doc, "Objetivos e critérios de sucesso:", "publicar em 15/05/2026 "
+        "uma página com Lighthouse igual ou superior a 90, seis modais de tratamento "
+        "operantes, doze cartões de especialista com registro no CRO, deep links de "
+        "WhatsApp testados por unidade, custo final igual ou inferior a R$ 29.920,00, "
+        "satisfação da patrocinadora igual ou superior a 8/10 e conformidade "
+        "LGPD/CRO.")
+    paragrafo_rotulo(doc, "Escopo preliminar:", "descoberta e personas, arquitetura das "
+        "sete seções, UX/UI, front-end responsivo, conteúdo e produção fotográfica da "
+        "equipe, integrações de WhatsApp e mapas, SEO técnico, testes, go-live e "
+        "treinamento da recepção.")
+    paragrafo_rotulo(doc, "Orçamento sumário:", "R$ 29.920,00, recursos próprios da "
         "clínica, liberados em duas parcelas (60% em março; 40% em abril).")
     paragrafo_rotulo(doc, "Riscos de alto nível:", "mudanças frequentes de direção "
-        "visual, não conformidade com LGPD ou normas de publicidade odontológica, "
-        "atraso de conteúdo e falhas na integração ao CRM (detalhados na seção 5.7).")
-    paragrafo_rotulo(doc, "Data de aprovação:", "07/03/2025, com assinatura da "
+        "visual, atraso na entrega de fotos e dados de registro dos profissionais, "
+        "falha nos deep links de WhatsApp ou na incorporação dos mapas, não "
+        "conformidade com LGPD e normas de publicidade odontológica, perda de "
+        "desempenho pelo peso de mídia e de bibliotecas externas (detalhados na "
+        "seção 5.7).")
+    paragrafo_rotulo(doc, "Data de aprovação:", "06/03/2026, com assinatura da "
         "proprietária.")
     paragrafo(doc, "Os marcos principais aprovados no TAP são:")
     for item in [
-        "07/03/2025 – aprovação do termo de abertura;",
-        "21/03/2025 – aprovação de personas e estratégia (M1);",
-        "11/04/2025 – aprovação do design de alta fidelidade (M2);",
-        "02/05/2025 – publicação da página (go-live) (M3);",
-        "16/05/2025 – aceite final e encerramento.",
+        "06/03/2026 – aprovação do termo de abertura;",
+        "20/03/2026 – aprovação da arquitetura e da estratégia (M1);",
+        "17/04/2026 – aprovação do design de alta fidelidade (M2);",
+        "15/05/2026 – publicação da página (go-live) (M3);",
+        "22/05/2026 – aceite final e encerramento.",
     ]:
         marcador(doc, item)
 
     secao(doc, 2, "4.2 Interessados e matriz poder × interesse")
     paragrafo(doc, "A identificação dos interessados utilizou entrevista com a "
-        "proprietária e com a recepção, análise do fluxo atual de agendamentos e "
-        "levantamento de exigências regulatórias (LGPD e normas do CRO). Cada "
-        "interessado foi posicionado quanto ao poder de interferir no projeto e ao "
-        "grau de interesse, originando a Tabela 1 e a Figura 2.")
+        "proprietária e com a recepção das duas unidades, análise do fluxo atual de "
+        "agendamentos por WhatsApp e levantamento de exigências regulatórias (LGPD, "
+        "direitos de imagem e normas do CRO). Cada interessado foi posicionado quanto "
+        "ao poder de interferir no projeto e ao grau de interesse, originando a "
+        "Tabela 1 e a Figura 2.")
     tabela(doc,
            "Registro dos principais interessados do projeto",
-           "elaborada pelo autor (2025).",
+           "elaborada pelo autor (2026).",
            ["Interessado", "Poder", "Interesse", "Estratégia de engajamento"],
            [
-               ["Dra. Helena Prado (proprietária e patrocinadora)", "Alto", "Alto",
+               ["Dra. Giovana Tomé (sócia-proprietária e patrocinadora)", "Alto", "Alto",
                 "Gerir de perto: reunião semanal de status e decisões em até 48 h"],
-               ["Equipe de recepção (secretariado)", "Médio", "Alto",
-                "Manter informado: coautoria do formulário e treinamento no CRM"],
+               ["Equipe de doze dentistas especialistas", "Alto", "Alto",
+                "Gerir de perto: agenda do ensaio fotográfico e validação de CRO e especialidade"],
+               ["Recepção das duas unidades", "Médio", "Alto",
+                "Manter informado: coautoria do fluxo de WhatsApp e treinamento de atendimento"],
                ["Pacientes atuais da clínica", "Baixo", "Alto",
-                "Manter informado: convites para testes de usabilidade"],
+                "Manter informado: convites para testes de usabilidade e cessão de depoimentos"],
                ["Pacientes potenciais (público-alvo)", "Baixo", "Alto",
                 "Manter informado: pesquisa de personas e testes remotos"],
                ["Agência de mídia paga parceira", "Médio", "Médio",
-                "Monitorar: alinhamento de rastreamento (GA4 e pixel)"],
-               ["Conselho de odontologia (CRO-SC)", "Médio", "Baixo",
+                "Monitorar: alinhamento de rastreamento (GA4 e parâmetros UTM)"],
+               ["Conselho regional de odontologia (CRO-SP)", "Médio", "Baixo",
                 "Manter satisfeito: conformidade com a Resolução CFO-159/2016"],
+               ["Google (avaliações e mapas)", "Baixo", "Baixo",
+                "Monitorar: uso dos blocos incorporados e das diretrizes de exibição"],
                ["Fornecedor de hospedagem e domínio", "Baixo", "Baixo",
                 "Monitorar: SLA de disponibilidade na janela de go-live"],
            ],
-           larguras=[4.6, 1.6, 2.0, 6.8], alinhar_centro={1, 2})
+           larguras=[4.8, 1.5, 1.8, 6.9], alinhar_centro={1, 2})
     figura(doc, svg_matriz_stakeholders, "matriz_stakeholders",
            "Matriz de interessados — poder × interesse",
-           "elaborada pelo autor (2025).", 12.0)
-    paragrafo(doc, "A matriz evidencia que a proprietária concentra poder e interesse "
-        "devendo ser gerida de perto, com decisões em tempo curto; a recepção e os "
-        "pacientes, de alto interesse e menor poder, exigem informação e participação "
-        "nas decisões de interface; e exigências regulatórias do CRO, ainda que de "
-        "baixo interesse corrente, são tratadas como restrição de conformidade.")
+           "elaborada pelo autor (2026).", 12.0)
+    paragrafo(doc, "A matriz evidencia que a proprietária e a equipe de especialistas "
+        "concentram poder e interesse, devendo ser geridas de perto, com decisões em "
+        "tempo curto; a recepção e os pacientes, de alto interesse e menor poder, "
+        "exigem informação e participação nas decisões de interface; e as exigências "
+        "regulatórias do CRO, ainda que de baixo interesse corrente, são tratadas como "
+        "restrição de conformidade.")
 
     secao(doc, 2, "4.3 Premissas e restrições")
     paragrafo(doc, "Premissas aceitas na iniciação:")
     for item in [
-        "logotipo, cores e materiais de marca entregues pela clínica na semana 1;",
+        "logotipo, paleta institucional e materiais de marca entregues pela clínica na semana 1;",
         "decisões de aprovação da proprietária em até 48 horas;",
-        "acesso ao Google Meu Negócio, Analytics e CRM concedido na semana 1;",
+        "dados de registro no CRO e especialidade dos doze profissionais fornecidos na semana 1;",
+        "acesso ao Google Meu Negócio, Analytics e painel da hospedagem concedido na semana 1;",
         "hospedagem com SSL e domínio já registrados e disponíveis;",
-        "revisão clínica do conteúdo realizada pela dentista em até 3 dias.",
+        "revisão clínica do conteúdo educativo e dos textos dos modais realizada por dentista em até 3 dias.",
     ]:
         marcador(doc, item)
     paragrafo(doc, "Restrições identificadas:")
     for item in [
-        "orçamento teto de R$ 19.250,00, sem aportes adicionais previstos;",
+        "orçamento teto de R$ 29.920,00, sem aportes adicionais previstos;",
         "comunicação odontológica conforme a Resolução CFO-159/2016, vedadas promessas de resultados (CFO, 2016);",
-        "tratamento de dados pessoais conforme a LGPD (BRASIL, 2018), com consentimento explícito no formulário;",
-        "escopo limitado a uma landing page e à página de política de privacidade;",
+        "exibição obrigatória do registro no CRO de cada profissional junto ao nome;",
+        "tratamento de dados pessoais conforme a LGPD (BRASIL, 2018) e cessão de direitos de imagem dos doze fotografados;",
+        "escopo limitado a uma página única e aos textos de aviso de privacidade;",
         "go-live somente em dia útil, às 7h, em janela de baixo tráfego.",
     ]:
         marcador(doc, item)
@@ -1059,54 +1116,64 @@ def iniciacao(doc):
 def planejamento(doc):
     secao(doc, 1, "5 PLANEJAMENTO DO PROJETO")
     paragrafo(doc, "No planejamento foram elaborados os planos auxiliares e as linhas "
-        "de base de escopo, prazo e custo, aprovados pela patrocinadora em 14/03/2025 e "
+        "de base de escopo, prazo e custo, aprovados pela patrocinadora em 13/03/2026 e "
         "mantidos sob controle integrado de mudanças.")
 
     secao(doc, 2, "5.1 Declaração de escopo")
     paragrafo(doc, "O escopo descreve o produto e o trabalho necessário para entregá-lo. "
         "Estão incluídas as seguintes entregas:")
     for item in [
-        "estratégia validada: três personas, jornada do paciente e proposta de valor;",
-        "wireframes navegáveis e design de alta fidelidade (desktop e mobile);",
-        "landing page responsiva (uma página + política de privacidade);",
-        "formulário com validação, consentimento e integração ao CRM e WhatsApp;",
-        "copywriting persuasivo e ensaio fotográfico autoral;",
-        "SEO on-page, métricas (GA4 e pixel) e relatório Lighthouse;",
+        "estratégia validada: três personas, jornada do paciente e proposta de valor por unidade;",
+        "arquitetura da informação das sete seções e wireframes navegáveis;",
+        "design de alta fidelidade de desktop e mobile, com guia de estilo e paleta institucional;",
+        "seção hero com o tratamento em destaque (Implantes e Próteses) e chamada para avaliação;",
+        "bloco educativo sobre implantes e próteses dentárias, com lista de benefícios;",
+        "grade com seis cards de tratamento (Implantes, Ortodontia, Harmonização, Próteses, Endodontia e Odontopediatria) e respectivas janelas modais com conteúdo e botão de agendamento;",
+        "carrossel com os doze especialistas, nome, registro no CRO e resumo de formação;",
+        "bloco de prova social com as avaliações do Google e a nota agregada exibida;",
+        "cards das duas unidades com endereço, telefone, horário, mapa incorporado e deep link de WhatsApp próprio;",
+        "rodapé institucional, redes sociais, botão flutuante de WhatsApp, menu móvel recolhível e animações de revelação por rolagem;",
+        "SEO on-page, dados estruturados, métricas (GA4) e relatório Lighthouse;",
         "testes de usabilidade com cinco pacientes;",
-        "treinamento de 2 horas da recepção e documentação de transição.",
+        "treinamento de 2 horas da recepção das duas unidades e documentação de transição.",
     ]:
         marcador(doc, item)
     paragrafo(doc, "Estão explicitamente fora do escopo: portal do paciente; "
-        "agendamento online com agenda própria; blog e conteúdo contínuo; campanhas de "
-        "mídia paga (responsabilidade da agência parceira); e manutenção além de 90 "
-        "dias após o go-live.")
+        "agendamento online com agenda própria; blog e produção contínua de conteúdo; "
+        "página dedicada de política de privacidade; cadastro de novos profissionais "
+        "por painel administrativo; versão em outro idioma; campanhas de mídia paga "
+        "(responsabilidade da agência parceira); e manutenção além de 90 dias após o "
+        "go-live.")
     paragrafo(doc, "Critérios de aceitação: pontuação Lighthouse igual ou superior a "
-        "90 nas quatro categorias; formulário testado ponta a ponta com chegada do lead "
-        "ao CRM; aprovação formal da proprietária; e checklist LGPD/CRO concluído sem "
-        "pendências.")
+        "90 nas quatro categorias; seis modais abrindo e fechando corretamente em "
+        "desktop e mobile; doze cartões de especialista com registro no CRO visível; "
+        "dez cliques de teste em cada deep link de WhatsApp abrindo a mensagem correta "
+        "na unidade correspondente; mapas carregando em menos de 3 s; aprovação formal "
+        "da proprietária; e checklist LGPD/CRO concluído sem pendências.")
 
     secao(doc, 2, "5.2 Estrutura analítica do projeto (EAP)")
     paragrafo(doc, "A decomposição do escopo seguiu a regra dos 100%: a EAP contempla "
         "todo o trabalho do projeto e nada fora dela será executado. A Figura 3 "
         "apresenta os três níveis de decomposição adotados.")
     figura(doc, svg_eap, "eap",
-           "Estrutura analítica do projeto (EAP) da landing page da Clínica Sorriso Real",
-           "elaborada pelo autor (2025).", 15.5)
+           "Estrutura analítica do projeto (EAP) do site da Clínica Uai Odontologia",
+           "elaborada pelo autor (2026).", 15.5)
     paragrafo(doc, "O dicionário da EAP descreve, para cada pacote, o responsável, as "
-        "entregas e os critérios de aceitação. A título de exemplo, o pacote 3.2 (Design "
-        "de alta fidelidade) é de responsabilidade da designer contratada, entrega o "
-        "arquivo Figma e o guia de estilo, e é aceito com a aprovação da proprietária "
-        "em no máximo duas rodadas de revisão.")
+        "entregas e os critérios de aceitação. A título de exemplo, o pacote 4.2 "
+        "(Modais dos seis tratamentos) é de responsabilidade do desenvolvedor, entrega "
+        "os seis componentes com conteúdo injetado e botão de WhatsApp contextual, e é "
+        "aceito quando os seis abrem, fecham por clique externo e por tecla Escape, e "
+        "travam a rolagem do fundo em mobile.")
 
     secao(doc, 2, "5.3 Cronograma")
     paragrafo(doc, "As atividades foram sequenciadas por precedências e as durações "
         "estimadas por técnicas análogas, com base em projetos digitais de porte "
-        "semelhante. A linha de base do prazo cobre 10 semanas, de março a maio de "
-        "2025, com marcos M1 (estratégia), M2 (design) e M3 (go-live), conforme a "
-        "Figura 4.")
+        "semelhante. A linha de base do prazo cobre 12 semanas, de março a maio de "
+        "2026, com marcos M1 (arquitetura e estratégia), M2 (design) e M3 (go-live), "
+        "conforme a Figura 4.")
     figura(doc, svg_gantt, "gantt",
-           "Cronograma do projeto (Gantt) — semanas 1 a 10 (março a maio de 2025)",
-           "elaborada pelo autor (2025).", 15.0)
+           "Cronograma do projeto (Gantt) — semanas 1 a 12 (março a maio de 2026)",
+           "elaborada pelo autor (2026).", 15.0)
     paragrafo(doc, "O caminho crítico atravessa a linha de produto — briefing, "
         "personas, wireframes, design, front-end, integrações, testes e go-live — sem "
         "folga disponível. A frente de conteúdo admite folga de duas semanas e a de "
@@ -1115,28 +1182,32 @@ def planejamento(doc):
 
     secao(doc, 2, "5.4 Custos e orçamento")
     paragrafo(doc, "As estimativas foram obtidas de baixo para cima, a partir dos "
-        "pacotes de trabalho da EAP, com cotações de profissionais e fornecedores. A "
+        "pacotes de trabalho da EAP, com cotações de profissionais e fornecedores. O "
+        "escopo maior — sete seções, seis modais e produção fotográfica de doze "
+        "profissionais — elevou o custo em relação a uma landing page simples. A "
         "Tabela 2 consolida o orçamento aprovado, incluindo reserva de contingência de "
         "10% gerida pelo gerente do projeto.")
     tabela(doc,
            "Orçamento detalhado por categoria de custo",
-           "elaborada pelo autor (2025).",
+           "elaborada pelo autor (2026).",
            ["Categoria de custo", "Valor (R$)", "% do orçamento"],
            [
-               ["Descoberta e estratégia", "2.000,00", "10,4%"],
-               ["Pesquisa, arquitetura e wireframes (UX)", "3.000,00", "15,6%"],
-               ["Design de interface (UI)", "3.500,00", "18,1%"],
-               ["Desenvolvimento front-end e integrações", "5.500,00", "28,6%"],
-               ["Conteúdo, copywriting e fotografia", "2.000,00", "10,4%"],
-               ["SEO, performance e acessibilidade", "1.000,00", "5,2%"],
-               ["Testes, QA e lançamento", "500,00", "2,6%"],
-               ["Reserva de contingência (10%)", "1.750,00", "9,1%"],
-               ["TOTAL (linha de base do custo)", "19.250,00", "100%"],
+               ["Descoberta, benchmark e estratégia", "2.200,00", "7,4%"],
+               ["Arquitetura das sete seções e wireframes (UX)", "3.400,00", "11,4%"],
+               ["Design de interface desktop e mobile (UI)", "4.200,00", "14,0%"],
+               ["Desenvolvimento front-end, modais e carrosséis", "7.800,00", "26,1%"],
+               ["Copywriting das seções e dos seis modais", "2.400,00", "8,0%"],
+               ["Produção fotográfica da equipe e banco de imagens", "3.600,00", "12,0%"],
+               ["Integrações de WhatsApp, mapas e avaliações", "1.400,00", "4,7%"],
+               ["SEO on-page, performance e acessibilidade", "1.300,00", "4,3%"],
+               ["Testes, QA e publicação", "900,00", "3,0%"],
+               ["Reserva de contingência (10%)", "2.720,00", "9,1%"],
+               ["TOTAL (linha de base do custo)", "29.920,00", "100%"],
            ],
            larguras=[7.6, 3.0, 3.0], alinhar_centro={1, 2})
     paragrafo(doc, "Os recursos são integralmente próprios da clínica, liberados em "
         "duas parcelas (60% em março e 40% em abril). Hospedagem, domínio e licenças de "
-        "fontes estão incluídos na categoria de desenvolvimento. O fluxo de desembolso "
+        "imagens estão incluídos nas respectivas categorias. O fluxo de desembolso "
         "planejado, representado pela curva S da Figura 6 (seção 7.1), servirá de linha "
         "de base para o gerenciamento de valor agregado.")
 
@@ -1147,40 +1218,47 @@ def planejamento(doc):
         "Lighthouse igual ou superior a 90 em performance, acessibilidade, boas práticas e SEO;",
         "maior elemento de conteúdo (LCP) renderizado em menos de 2,5 s em conexão 4G simulada;",
         "zero defeitos críticos na matriz de testes (5 dispositivos × 3 navegadores);",
-        "10 envios de formulário de teste com chegada do lead ao CRM em menos de 1 minuto;",
+        "dez cliques de teste em cada deep link de WhatsApp abrindo a mensagem pré-preenchida correta;",
+        "mapas das duas unidades carregando em menos de 3 s, com alternativa em texto do endereço;",
+        "contraste de texto conforme WCAG 2.1 nível AA, inclusive sobre as imagens do hero;",
         "conclusão de pelo menos 80% nas três tarefas do teste de usabilidade com cinco pacientes.",
     ]:
         marcador(doc, item)
     paragrafo(doc, "A garantia da qualidade inclui revisão por pares de código, "
-        "checklist WCAG 2.1 nível AA, auditoria de privacidade (consentimento, cookies "
-        "e armazenamento de dados), teste de usabilidade com pacientes reais e um ciclo "
-        "de QA completo antes da janela de go-live.")
+        "checklist WCAG 2.1 nível AA, auditoria de privacidade (blocos incorporados, "
+        "cookies e dados de contato), conferência dos registros no CRO de cada cartão "
+        "da equipe, teste de usabilidade com pacientes reais e um ciclo de QA completo "
+        "antes da janela de go-live.")
 
     secao(doc, 2, "5.6 Recursos e comunicações")
     paragrafo(doc, "A equipe é composta pelo gerente do projeto (também desenvolvedor "
-        "full-stack, com 50% de dedicação), designer de UI contratada (60 horas), "
-        "redator publicitário (30 horas), fotógrafo (uma diária) e analista de SEO (16 "
-        "horas). A recepção da clínica participa como especialista de domínio no "
-        "desenho do formulário e do fluxo de leads.")
+        "full-stack, com 60% de dedicação), designer de UI contratada (80 horas), "
+        "redator publicitário (40 horas), fotógrafo (duas diárias), analista de SEO (16 "
+        "horas) e consultoria de acessibilidade (8 horas). A recepção das duas "
+        "unidades participa como especialista de domínio no desenho do fluxo de "
+        "WhatsApp, e os doze dentistas participam do ensaio fotográfico e da validação "
+        "dos dados de registro.")
     paragrafo(doc, "O plano de comunicações define quem recebe o quê, quando e por "
         "qual meio, conforme a Tabela 3.")
     tabela(doc,
            "Plano de comunicação do projeto",
-           "elaborada pelo autor (2025).",
+           "elaborada pelo autor (2026).",
            ["Público", "Informação", "Frequência", "Meio", "Responsável"],
            [
                ["Proprietária (patrocinadora)", "Status semanal e decisões de aprovação",
                 "Semanal", "Reunião online (30 min)", "Gerente do projeto"],
-               ["Equipe de recepção", "Fluxo de leads e treinamento do CRM",
-                "Nos marcos", "Presencial", "Gerente do projeto"],
-               ["Agência de mídia parceira", "Especificações de rastreamento e pixel",
+               ["Equipe de dentistas", "Agenda do ensaio e validação de CRO e especialidade",
+                "Nos marcos", "WhatsApp e presencial", "Gerente do projeto"],
+               ["Recepção das duas unidades", "Fluxo de WhatsApp e treinamento de atendimento",
+                "Quinzenal", "Presencial", "Gerente do projeto"],
+               ["Agência de mídia parceira", "Parâmetros UTM e eventos de clique",
                 "Quinzenal", "E-mail", "Desenvolvedor"],
                ["Pacientes (testes de usabilidade)", "Convites e agendamento das sessões",
                 "Conforme marco", "WhatsApp", "Designer de UX"],
                ["Fornecedor de hospedagem", "SLA e janela de publicação",
                 "Pontual", "Ticket de suporte", "Desenvolvedor"],
            ],
-           larguras=[3.6, 4.4, 2.2, 2.6, 2.4])
+           larguras=[3.4, 4.4, 2.2, 2.6, 2.4])
 
     secao(doc, 2, "5.7 Riscos")
     paragrafo(doc, "Os riscos foram identificados por brainstorming com a equipe e a "
@@ -1189,36 +1267,37 @@ def planejamento(doc):
         "registro é revisado semanalmente no monitoramento (seção 7.3).")
     tabela(doc,
            "Registro de riscos com respostas planejadas",
-           "elaborada pelo autor (2025).",
+           "elaborada pelo autor (2026).",
            ["ID", "Risco", "P", "I", "Nível", "Resposta e ação preventiva"],
            [
-               ["R1", "Alterações frequentes de direção visual (retrabalho)", "4", "3", "12 – Alto",
+               ["R1", "Alterações frequentes na ordem e no visual das seções (retrabalho)", "4", "3", "12 – Alto",
                 "Mitigar: timebox de duas rodadas de revisão e decisões em 48 h"],
-               ["R2", "Atraso na entrega de conteúdo e fotos pela clínica", "4", "2", "8 – Moderado",
-                "Mitigar: cronograma de conteúdo com datas e banco de imagens reserva"],
-               ["R3", "Falhas na integração do formulário ao CRM", "2", "4", "8 – Moderado",
-                "Mitigar: protótipo de integração antecipado e testes com dados fictícios"],
-               ["R4", "Não conformidade com LGPD ou normas do CRO", "2", "5", "10 – Alto",
-                "Mitigar: checklist jurídico, consentimento explícito e revisão da dentista"],
-               ["R5", "Indisponibilidade da hospedagem na janela de go-live", "1", "4", "4 – Baixo",
+               ["R2", "Atraso nas fotos da equipe e nos dados de registro no CRO", "4", "2", "8 – Moderado",
+                "Mitigar: agenda única do ensaio e planilha de dados com prazo na semana 1"],
+               ["R3", "Deep links de WhatsApp ou mapas incorporados com falha", "2", "4", "8 – Moderado",
+                "Mitigar: protótipo de integração antecipado e testes com os dois números reais"],
+               ["R4", "Não conformidade com LGPD, direitos de imagem ou normas do CRO", "2", "5", "10 – Alto",
+                "Mitigar: termo de cessão de imagem, aviso de privacidade e revisão da dentista"],
+               ["R5", "Perda de performance pelo peso das fotos e das bibliotecas externas", "3", "3", "9 – Moderado",
+                "Mitigar: imagens comprimidas em WebP, carregamento tardio e orçamento de peso por página"],
+               ["R6", "Indisponibilidade da hospedagem na janela de go-live", "1", "4", "4 – Baixo",
                 "Mitigar: publicação em horário de baixo tráfego e plano de rollback"],
-               ["R6", "Baixa performance prejudicando SEO e experiência", "2", "3", "6 – Moderado",
-                "Mitigar: imagens otimizadas e teste Lighthouse a cada entrega"],
            ],
            larguras=[1.1, 5.2, 0.9, 0.9, 2.0, 5.0], alinhar_centro={0, 2, 3, 4})
     figura(doc, svg_matriz_riscos, "matriz_riscos",
            "Matriz de probabilidade × impacto (5 × 5) com os riscos do registro",
-           "elaborada pelo autor (2025).", 11.0)
-    paragrafo(doc, "A reserva de contingência (R$ 1.750,00) cobre as ameaças "
+           "elaborada pelo autor (2026).", 11.0)
+    paragrafo(doc, "A reserva de contingência (R$ 2.720,00) cobre as ameaças "
         "identificadas. O uso da contingência exige registro no sistema de controle de "
         "mudanças, com justificativa documentada e ciência da patrocinadora.")
 
     secao(doc, 2, "5.8 Aquisições")
-    paragrafo(doc, "Três aquisições demandam contratação externa: serviços de "
-        "fotografia (diária, contrato simples com cessão de direitos de imagem); "
-        "hospedagem e domínio (anual, incluídos na categoria de desenvolvimento); e "
-        "licenças de fontes tipográficas e imagens. Para contratações acima de "
-        "R$ 1.000,00 exige-se cotação mínima de três fornecedores.")
+    paragrafo(doc, "Três aquisições demandam contratação externa: produção fotográfica "
+        "dos doze profissionais e das instalações (duas diárias, contrato com cessão de "
+        "direitos de imagem); hospedagem e domínio (anual, incluídos na categoria de "
+        "desenvolvimento); e licenças de imagens de banco e fontes tipográficas. Para "
+        "contratações acima de R$ 1.000,00 exige-se cotação mínima de três "
+        "fornecedores.")
     paragrafo(doc, "O recebimento dos serviços é conferido pelo gerente contra o "
         "escopo contratado, com termo de aceite. Os contratos serão encerrados "
         "formalmente na fase de encerramento do projeto, sem pendências financeiras ou "
@@ -1243,8 +1322,9 @@ def execucao(doc):
 
     secao(doc, 2, "6.2 Gestão do conhecimento")
     paragrafo(doc, "O conhecimento explícito foi organizado em guia de estilo "
-        "documentado, catálogo de componentes da interface e vídeos curtos de três a "
-        "cinco minutos para a recepção — como atender um lead que chega pelo CRM e "
+        "documentado, catálogo de componentes da interface — cards de tratamento, "
+        "modais, cartões de especialista, cards de unidade — e vídeos curtos de três a "
+        "cinco minutos para a recepção, ensinando a registrar a origem do lead e a "
         "responder pelo WhatsApp dentro do prazo combinado.")
     paragrafo(doc, "O conhecimento tácito é mobilizado em sessões de pareamento entre "
         "design e desenvolvimento e nas demonstrações quinzenais; as lições aprendidas "
@@ -1253,20 +1333,24 @@ def execucao(doc):
     secao(doc, 2, "6.3 Garantia da qualidade e engajamento")
     paragrafo(doc, "Cada entrega é precedida de revisão por pares de código e "
         "controlada pela matriz de testes em cinco dispositivos e três navegadores. A "
-        "auditoria de privacidade verificou consentimento explícito no formulário, "
-        "política de cookies e minimização de dados coletados, conforme a LGPD "
-        "(BRASIL, 2018).")
+        "auditoria de privacidade verificou o aviso de privacidade junto aos botões de "
+        "WhatsApp, o comportamento dos blocos incorporados do Google e a minimização "
+        "dos dados trafegados nos deep links, conforme a LGPD (BRASIL, 2018). Os termos "
+        "de cessão de direitos de imagem dos doze profissionais foram assinados antes "
+        "do ensaio.")
     paragrafo(doc, "Os testes de usabilidade com cinco pacientes reais — agendar "
-        "avaliação, encontrar convênios e localizar a clínica — alcançaram 87% de "
-        "conclusão média, acima do critério de 80%. As comunicações foram executadas "
-        "conforme o plano da Tabela 3, com destaque para as demonstrações quinzenais à "
-        "proprietária.")
+        "avaliação, localizar a unidade mais próxima e entender o que é um implante — "
+        "alcançaram 84% de conclusão média, acima do critério de 80%. As comunicações "
+        "foram executadas conforme o plano da Tabela 3, com destaque para as "
+        "demonstrações quinzenais à proprietária.")
 
     secao(doc, 2, "6.4 Gestão das aquisições na execução")
-    paragrafo(doc, "O ensaio fotográfico foi realizado em 08/04/2025 com roteiro "
-        "aprovado, e as imagens foram incorporadas com cessão de direitos registrada. "
-        "As licenças de fontes e a contratação de hospedagem foram documentadas no "
-        "acervo do projeto, para encerramento formal na fase final.")
+    paragrafo(doc, "O ensaio fotográfico foi realizado em 14/04/2026, em dois blocos "
+        "de quatro horas nas instalações da unidade Campos Sales, com roteiro aprovado "
+        "e padronização de enquadramento no terço superior para uniformizar o recorte "
+        "dos cartões. As licenças de imagens de banco e a contratação de hospedagem "
+        "foram documentadas no acervo do projeto, para encerramento formal na fase "
+        "final.")
 
 
 def monitoramento(doc):
@@ -1279,48 +1363,49 @@ def monitoramento(doc):
     paragrafo(doc, "O desempenho físico-financeiro é medido semanalmente pelo "
         "gerenciamento de valor agregado (EVM), que compara o valor planejado (PV), o "
         "valor agregado (EV) e o custo real (AC). A Figura 6 apresenta as curvas "
-        "acumuladas e a Tabela 5 consolida os indicadores na data de dados de 11 de "
-        "abril de 2025 (fim da semana 6).")
+        "acumuladas e a Tabela 5 consolida os indicadores na data de dados de 17 de "
+        "abril de 2026 (fim da semana 7).")
     figura(doc, svg_curva_s, "curva_s",
            "Curva S semanal — valor planejado (PV), valor agregado (EV) e custo real "
-           "(AC), em R$ mil", "elaborada pelo autor (2025).", 14.5)
+           "(AC), em R$ mil", "elaborada pelo autor (2026).", 14.5)
     tabela(doc,
-           "Indicadores de valor agregado na data de dados (11/04/2025)",
-           "elaborada pelo autor (2025).",
+           "Indicadores de valor agregado na data de dados (17/04/2026)",
+           "elaborada pelo autor (2026).",
            ["Indicador", "Valor", "Leitura gerencial"],
            [
-               ["BAC (orçamento no término)", "R$ 19.250,00",
+               ["BAC (orçamento no término)", "R$ 29.920,00",
                 "Linha de base do custo aprovada no planejamento"],
-               ["PV (valor planejado)", "R$ 13.500,00",
+               ["PV (valor planejado)", "R$ 16.400,00",
                 "Custo planejado até a data de dados"],
-               ["EV (valor agregado)", "R$ 12.400,00",
+               ["EV (valor agregado)", "R$ 15.100,00",
                 "Valor do trabalho efetivamente realizado"],
-               ["AC (custo real)", "R$ 14.200,00",
+               ["AC (custo real)", "R$ 17.300,00",
                 "Custo incorrido até a data de dados"],
-               ["SV (variação de prazo)", "-R$ 1.100,00",
+               ["SV (variação de prazo)", "-R$ 1.300,00",
                 "Projeto atrasado em relação à linha de base"],
-               ["CV (variação de custo)", "-R$ 1.800,00",
+               ["CV (variação de custo)", "-R$ 2.200,00",
                 "Gasto acima do previsto para o realizado"],
                ["SPI (índice de prazo)", "0,92",
                 "Avanço cerca de 8% abaixo do planejado"],
                ["CPI (índice de custo)", "0,87",
                 "Cada R$ 1,00 gasto gera R$ 0,87 de valor"],
-               ["EAC (estimativa no término)", "R$ 22.051,00",
+               ["EAC (estimativa no término)", "R$ 34.280,00",
                 "Custo final estimado sem ações corretivas"],
-               ["VAC (variação no término)", "-R$ 2.801,00",
+               ["VAC (variação no término)", "-R$ 4.360,00",
                 "Estouro projetado do orçamento"],
-               ["TCPI (desempenho necessário)", "1,36",
-                "Manter o BAC exigiria eficiência de custo inviável"],
+               ["TCPI (desempenho necessário)", "1,17",
+                "Manter o BAC exigiria eficiência de custo acima da atual"],
            ],
            larguras=[4.6, 3.2, 7.4], alinhar_centro={1})
-    paragrafo(doc, "Os índices evidenciaram o materialização do risco R1: duas rodadas "
-        "extras de revisão de design solicitadas pela patrocinadora geraram atraso e "
-        "custo de retrabalho. As ações corretivas aprovadas foram: timebox de revisões "
-        "(duas rodadas, decisões em 48 horas); fast-tracking, com SEO e testes em "
-        "paralelo às integrações; redução do escopo opcional (seção Equipe simplificada); "
-        "e uso de R$ 800,00 da contingência. A EAC revisada foi apresentada à "
+    paragrafo(doc, "Os índices evidenciaram a materialização do risco R1: duas rodadas "
+        "extras de revisão de design solicitadas pela patrocinadora, somadas à inclusão "
+        "do bloco de avaliações do Google fora da linha de base, geraram atraso e custo "
+        "de retrabalho. As ações corretivas aprovadas foram: timebox de revisões (duas "
+        "rodadas, decisões em 48 horas); fast-tracking, com SEO e testes em paralelo às "
+        "integrações; redução do escopo opcional (seção de vídeos de depoimento); e uso "
+        "de R$ 1.200,00 da contingência. A EAC revisada foi apresentada à "
         "patrocinadora, e as curvas da Figura 6 mostram a recuperação nas semanas "
-        "seguintes, com custo final de R$ 19.100,00 e go-live no marco previsto.")
+        "seguintes, com custo final de R$ 29.700,00 e go-live no marco previsto.")
 
     secao(doc, 2, "7.2 Controle integrado de mudanças")
     paragrafo(doc, "Toda solicitação de mudança é registrada em formulário único e "
@@ -1329,21 +1414,23 @@ def monitoramento(doc):
         "patrocinadora. Mudanças aprovadas atualizam a documentação e são comunicadas "
         "à equipe.")
     paragrafo(doc, "Na prática, o mecanismo aprovou o botão flutuante de WhatsApp "
-        "(+R$ 450,00, sem impacto no prazo) e rejeitou a seção de depoimentos em "
-        "vídeo — peso excessivo de mídia e custo acima da reserva. Não houve "
+        "(+R$ 400,00, sem impacto no prazo) e o bloco de avaliações do Google "
+        "(+R$ 600,00, uma semana de folga consumida) e rejeitou a seção de vídeos de "
+        "depoimento — peso excessivo de mídia e custo acima da reserva. Não houve "
         "replanejamento das linhas de base; a EAC revisada foi documentada como "
         "projeção gerencial.")
 
     secao(doc, 2, "7.3 Controle de riscos e de interessados")
     paragrafo(doc, "O registro de riscos é revisado semanalmente, com gatilhos "
-        "definidos: mais de duas rodadas de revisão de design; conteúdo pendente por "
-        "mais de três dias; Lighthouse abaixo de 85 em qualquer entrega. O risco R1 "
-        "foi acionado na semana 5 e mitigado pelo timebox; o R2 foi evitado com o "
-        "cronograma de conteúdo negociado com a dentista.")
+        "definidos: mais de duas rodadas de revisão de design; foto ou registro no CRO "
+        "pendente por mais de três dias; Lighthouse abaixo de 85 em qualquer entrega; "
+        "deep link abrindo o número errado. O risco R1 foi acionado na semana 5 e "
+        "mitigado pelo timebox; o R2 foi evitado com a agenda única do ensaio e a "
+        "planilha de dados entregue na semana 1.")
     paragrafo(doc, "O checklist de conformidade LGPD/CRO foi executado integralmente "
         "antes da janela de go-live, sem pendências. A matriz de interessados foi "
-        "atualizada em abril: a recepção migrou para gerir de perto após coautorar os "
-        "campos do formulário, elevando a qualidade dos dados captados no CRM.")
+        "atualizada em abril: a recepção migrou para gerir de perto após coautorar o "
+        "fluxo de WhatsApp por unidade, elevando a taxa de agendamento por clique.")
 
 
 def encerramento(doc):
@@ -1352,32 +1439,34 @@ def encerramento(doc):
         "transfere o produto e consolida o conhecimento gerado.")
 
     secao(doc, 2, "8.1 Aceite e encerramento administrativo")
-    paragrafo(doc, "A verificação do escopo comparou cada entrega da linha de base "
-        "com o produto realizado por meio de checklist. O relatório Lighthouse final "
-        "registrou 92 em performance, 94 em acessibilidade, 100 em boas práticas e 96 "
-        "em SEO — todos acima do critério de 90. Os dez envios de teste do formulário "
-        "chegaram ao CRM em menos de um minuto.")
-    paragrafo(doc, "O termo de aceite foi assinado pela proprietária em 16/05/2025. "
-        "Foram transferidos à clínica os acessos (hospedagem, domínio, CRM e "
-        "Analytics), o repositório de código, a documentação e os vídeos de "
+    paragrafo(doc, "A verificação do escopo comparou cada entrega da linha de base com "
+        "o produto realizado por meio de checklist. O relatório Lighthouse final "
+        "registrou 91 em performance, 95 em acessibilidade, 100 em boas práticas e 97 "
+        "em SEO — todos acima do critério de 90. Os dez cliques de teste em cada deep "
+        "link abriram a mensagem correta na unidade correspondente e os dois mapas "
+        "carregaram abaixo de 3 s.")
+    paragrafo(doc, "O termo de aceite foi assinado pela proprietária em 22/05/2026. "
+        "Foram transferidos à clínica os acessos (hospedagem, domínio, Analytics e "
+        "Google Meu Negócio), o repositório de código, a documentação e os vídeos de "
         "treinamento; a titularidade da hospedagem e do domínio passou ao CNPJ da "
-        "clínica, e o contrato do fotógrafo foi encerrado sem pendências.")
+        "clínica, e os contratos do fotógrafo e da consultoria de acessibilidade foram "
+        "encerrados sem pendências.")
 
     secao(doc, 2, "8.2 Lições aprendidas")
     paragrafo(doc, "O relatório final consolidou as principais lições aprendidas:")
     for item in [
         "o timebox de duas rodadas de revisão eliminou o ciclo de retrabalho de design;",
-        "envolver a recepção cedo melhorou os campos do formulário e a qualidade dos leads;",
-        "fotos autorais superaram banco de imagens nos testes de usabilidade (preferência de 85%);",
-        "cerca de 46% da contingência foi consumida pelo retrabalho de design (R$ 800,00);",
-        "comunicação assíncrona com a agência (vídeos curtos) reduziu reuniões sem perda de alinhamento;",
-        "o TCPI elevado sinalizou cedo a necessidade de renegociar escopo opcional com a patrocinadora.",
+        "envolver a recepção cedo no desenho do fluxo de WhatsApp melhorou a distribuição da demanda entre as unidades;",
+        "o roteiro padronizado de enquadramento das fotos reduziu o retrabalho de recorte dos cartões da equipe;",
+        "cerca de 44% da contingência foi consumida pelo retrabalho de design (R$ 1.200,00);",
+        "o bloco de avaliações do Google, incluído fora da linha de base, exigiu uma semana de folga que não existia;",
+        "o TCPI de 1,17 sinalizou cedo a necessidade de cortar o escopo opcional de vídeo com a patrocinadora.",
     ]:
         marcador(doc, item)
-    paragrafo(doc, "O fechamento financeiro registrou custo final de R$ 19.100,00 "
-        "para valor agregado de R$ 19.250,00, resultando em CPI final de 1,01 e SPI "
-        "final de 1,00 — projeto entregue no marco de go-live, dentro do orçamento e "
-        "com aceite formal da patrocinadora.")
+    paragrafo(doc, "O fechamento financeiro registrou custo final de R$ 29.700,00 para "
+        "valor agregado de R$ 29.920,00, resultando em CPI final de 1,01 e SPI final de "
+        "1,00 — projeto entregue no marco de go-live, dentro do orçamento e com aceite "
+        "formal da patrocinadora.")
 
 
 def consideracoes(doc):
@@ -1388,13 +1477,16 @@ def consideracoes(doc):
         "indicadores semanais. A disciplina de linhas de base e de controle integrado "
         "de mudanças foi decisiva para conter o efeito das revisões sucessivas de "
         "design — risco típico de projetos com patrocinador único e altamente "
-        "envolvido.")
+        "envolvido — e para manter sob controle um escopo bem mais extenso que o de "
+        "uma landing page convencional: sete seções, seis modais, doze profissionais "
+        "fotografados e duas unidades integradas.")
     paragrafo(doc, "Como limitações, destacam-se a sensibilidade das estimativas em "
         "projetos curtos e a dependência de decisões rápidas da patrocinadora. Como "
-        "próximos passos, propõem-se testes A/B de títulos e propostas de valor, a "
-        "criação de páginas por especialidade (implante e ortodontia) reaproveitando o "
-        "guia de estilo, e a medição do KPI de aumento de 30% nos agendamentos "
-        "digitais ao final dos 90 dias após o go-live.")
+        "próximos passos, propõem-se testes A/B de títulos e propostas de valor por "
+        "unidade, a criação de páginas por especialidade (implante e ortodontia) "
+        "reaproveitando o guia de estilo e os componentes já construídos, e a medição "
+        "do KPI de aumento de 30% nos agendamentos digitais ao final dos 90 dias após "
+        "o go-live.")
 
 
 def referencias(doc):
@@ -1418,6 +1510,8 @@ def referencias(doc):
         "projetos: guia PMBOK. 6. ed. Newtown Square: PMI, 2017.",
         "PROJECT MANAGEMENT INSTITUTE. Um guia do conhecimento em gerenciamento de "
         "projetos: guia PMBOK. 7. ed. Newtown Square: PMI, 2021.",
+        "WORLD WIDE WEB CONSORTIUM (W3C). Web Content Accessibility Guidelines "
+        "(WCAG) 2.1. 2018.",
     ]:
         doc.add_paragraph(ref, style="Referência ABNT")
 
@@ -1445,7 +1539,7 @@ def main():
     criar_estilos(doc)
 
     cp = doc.core_properties
-    cp.title = "Landing Page da Clínica Odontológica Sorriso Real — Guia PMBOK"
+    cp.title = "Site de Conversão da Clínica Odontológica Uai Odontologia — Guia PMBOK"
     cp.author = "Maria Alves da Silva"
     cp.subject = "Gerenciamento de projetos (PMBOK)"
 
