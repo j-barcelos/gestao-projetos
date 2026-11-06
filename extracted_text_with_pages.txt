@@ -1,0 +1,213 @@
+﻿=================== START OF SLIDE 1 ===================
+PI V
+-
+Sistemas Integrados de Gestão
+[NOME DO ALUNO/EQUIPE]
+==================== END OF SLIDE 1 ====================
+
+=================== START OF SLIDE 2 ===================
+1. Entender como funcionam as reservas do aluguel de carrinhos de sorvete, identificando perda de tempo, retrabalho, dentre outros
+2. A intenção não é mudar tudo de uma vez, mas tratar o que é prioritário
+3. A estrutura dos dados já foi tratada em um protótipo Django, que opera com dados reais de reservas
+1. Aluguel de Carrinho de Sorvete – convencimento do proprietário
+Se você concordar, o fluxo já pode ser demonstrado no sistema, começando pela tela pública de agendamento
+==================== END OF SLIDE 2 ====================
+
+=================== START OF SLIDE 3 ===================
+1. conversa inicial com o proprietário;
+2. 1 ou 2 contatos curtos de acompanhamento;
+3. 1 devolutiva final com o dashboard em execução.
+2. Qual será o empenho?
+==================== END OF SLIDE 3 ====================
+
+=================== START OF SLIDE 4 ===================
+• classes
+• atributos
+• relações básicas
+• fluxo de informação
+
+Classe cliente (exemplo):
+id
+nome_cliente
+telefone
+endereco
+email
+
+Classe reserva (exemplo):
+id
+id_cliente (FK)
+data_evento
+status (pendente/confirmado/cancelado)
+valor_pedido
+id_carrinho (FK)
+3. Estrutura do banco de dados
+
+Classes de apoio:
+Sorvete (nome_sorvete, preco, imagem, ativo)
+Carrinho (status de disponibilidade)
+ReservaProduto (id_reserva FK, id_sorvete FK, quantidade_escolhida)
+==================== END OF SLIDE 4 ====================
+
+=================== START OF SLIDE 5 ===================
+Agendamento de reservas
+• é um processo central do negócio;
+• costuma envolver WhatsApp, cadernos e controle manual de disponibilidade;
+• pode ter erros, datas sobrepostas e perda de informação;
+• é fácil de entender e explicar.
+4. Exemplo de processo do negócio
+Possíveis problemas
+reservas marcadas em datas conflitantes (mais carrinhos do que a frota);
+dificuldade para localizar histórico de eventos;
+falta de confirmação da reserva;
+ausência de controle de cancelamentos e valor do pedido.
+==================== END OF SLIDE 5 ====================
+
+=================== START OF SLIDE 6 ===================
+Escopo
+• Cadastro de clientes e reservas
+• Catálogo de sabores com preço e imagem
+• Consulta de disponibilidade por mês
+• Cálculo automático do valor (subtotal + taxa de aluguel)
+• Geração de dashboard analítico com exportação CSV/PDF
+5. Escopo do sistema implementado
+==================== END OF SLIDE 6 ====================
+
+=================== START OF SLIDE 7 ===================
+Início
+• Quando o cliente entra em contato para reservar o carrinho de sorvete para um evento (data, sabores e quantidade de carrinhos)
+6. Processo analisado
+Fim
+Quando a reserva é confirmada e as informações do cliente, dos sabores e do valor ficam registradas para consulta futura.
+Departamentos envolvidos
+• Atendimento / recepção do pedido
+• Proprietário / Administração (confirmação e painel)
+• Cliente
+==================== END OF SLIDE 7 ====================
+
+=================== START OF SLIDE 8 ===================
+Diante desse cenário, a administração pediu uma análise do processo atual de reservas, com base na lógica do makigami, para identificar gargalos e propor um fluxo futuro mais enxuto, com centralização das informações e uso de ETL como mecanismo de integração de dados — materializado no projeto Django já em operação.
+7. ETL
+ETL é a sigla para:
+• E — Extract: extrair dados (pedidos via WhatsApp, formulário web, agenda)
+• T — Transform: transformar dados (padronizar status, calcular subtotais e taxas, deduplicar clientes)
+• L — Load: carregar dados (banco MySQL do Django, dashboard e relatórios)
+==================== END OF SLIDE 8 ====================
+
+=================== START OF SLIDE 9 ===================
+Os dados são coletados de várias fontes.
+Exemplo:
+• o formulário público do site (api_criar_reserva);
+• pedidos feitos por WhatsApp (com link gerado automaticamente);
+• cadastros inseridos manualmente pelo administrador no painel (api_reservas POST);
+• planilha de sabores e preços.
+7.1 ETL como funciona – Extract (Extrair)
+==================== END OF SLIDE 9 ====================
+
+=================== START OF SLIDE 10 ===================
+Os dados são tratados para ficarem corretos e padronizados.
+Exemplo:
+• padronizar status como "pendente", "confirmado" ou "cancelado";
+• remover registros duplicados de clientes;
+• interpretar a quantidade de carrinhos solicitada (campo de observação da reserva);
+• calcular subtotal dos sabores, taxa de aluguel por carrinho e valor total.
+7.2 ETL como funciona – Transform (Transformar)
+==================== END OF SLIDE 10 ====================
+
+=================== START OF SLIDE 11 ===================
+Depois de tratados, os dados são enviados para uma base central.
+Exemplo:
+• o banco de dados do projeto (MySQL via mysqlclient);
+• a tabela mestre de reservas com relações a Cliente, Carrinho e ReservaProduto;
+• o dashboard analítico (view "dashboard");
+• os relatórios exportáveis em CSV e PDF.
+7.3 ETL como funciona – Load (Carregar)
+==================== END OF SLIDE 11 ====================
+
+=================== START OF SLIDE 12 ===================
+O ETL ajuda a:
+• reduzir retrabalho;
+• eliminar duplicidade;
+• melhorar a qualidade dos dados;
+• integrar canais diferentes (site, WhatsApp, painel admin);
+• gerar relatórios com mais confiança;
+• apoiar a tomada de decisão (receita confirmada, ticket médio, ocupação da frota).
+7.4 ETL para que serve?
+==================== END OF SLIDE 12 ====================
+
+=================== START OF SLIDE 13 ===================
+[MANTER A ESTRUTURA DO MAKIGAMI "AS IS" COM AS 9 MACROATIVIDADES, SUBSTITUINDO O CONTEXTO:]
+CLIENTE SOLICITA RESERVA (WHATSAPP/TELEFONE/PRESENCIAL)
+→ ATENDIMENTO RECEBE MENSAGENS
+→ VERIFICA DISPONIBILIDADE DA DATA/CARRINHOS MANUALMENTE
+→ REGISTRA E CONFIRMA EM LOCAL SEPARADO (caderno/planilha/WhatsApp)
+→ PROPRIETÁRIO DEFINE HORÁRIO E ROTINAS
+→ CONFERÊNCIA MANUAL – TENTA LEMBRAR HISTÓRICO
+→ REPASSA INFO AO CLIENTE
+→ CLIENTE AGUARDA / RECEBE INFO INCOMPLETA
+PROBLEMAS: controle totalmente manual; sem centralização nem histórico estruturado; depende da memória; duplicidade; informações em mais de um lugar; comunicação lenta e desencontrada; baixa experiência do cliente
+8. Makigami "as is" – 9 macroatividades
+==================== END OF SLIDE 13 ====================
+
+=================== START OF SLIDE 14 ===================
+Reservas descentralizadas
+WhatsApp, papel e memória coexistem sem integração.
+Cadastro informal
+nome, telefone, endereço e preferências de sabor do cliente não ficam padronizados.
+Dependência do proprietário
+muito do processo depende da experiência e da memória dele.
+Retrabalho
+dados são repetidos em conversa, agenda e caderno (quantidade de carrinhos anotada em texto livre, por exemplo).
+Baixa rastreabilidade
+difícil verificar histórico de eventos, cancelamentos e valores.
+8.1 Principais gargalos e ineficiências do "as is"
+==================== END OF SLIDE 14 ====================
+
+=================== START OF SLIDE 15 ===================
+O processo atual apresenta uma lógica fortemente manual, com uso de canais não integrados e registros pouco estruturados. O problema mais evidente não é apenas a reserva em si, mas a ausência de uma base informacional organizada que sustente a operação.
+O WhatsApp funciona como canal de contato, mas não como sistema de gestão. A agenda em papel oferece registro, mas não garante atualização dinâmica nem consulta rápida. A memória do proprietário supre parte das lacunas, tornando o processo frágil e dependente de uma única pessoa.
+A solução implementada centraliza o fluxo: o cliente agenda pelo site, o sistema valida disponibilidade da frota, calcula o valor e o proprietário acompanha tudo em um dashboard com métricas, filtros por período/status e exportação de relatórios.
+8.2 Diagnóstico resumido do "as is" e proposta "to be"
+==================== END OF SLIDE 15 ====================
+
+=================== START OF SLIDE 16 ===================
+Extract – exemplo
+Formulário do site captura nome, telefone, endereço, e-mail, data do evento, quantidade de carrinhos e sabores escolhidos (api_criar_reserva) e grava Cliente + Reserva + ReservaProduto no banco.
+9. Extract – exemplo
+==================== END OF SLIDE 16 ====================
+
+=================== START OF SLIDE 17 ===================
+Transform
+O sistema padroniza status da reserva, trata e-mails opcionais, interpreta a quantidade de carrinhos na descrição e calcula subtotal dos sorvetes, taxa de aluguel × carrinhos e total (funções de serialização e financeiro do app).
+11. Transform
+==================== END OF SLIDE 17 ====================
+
+=================== START OF SLIDE 18 ===================
+Load
+Dados consolidados alimentam: a listagem do painel (api_reservas), o dashboard mensal (ocupação diária da frota, receita, ticket médio, top sabores) e as exportações em CSV e PDF.
+12. Load
+==================== END OF SLIDE 18 ====================
+
+=================== START OF SLIDE 19 ===================
+Alternativas de importação – base única
+Importação da carteira existente via CSV/planilha para o modelo Cliente; migrações Django (0001–0010) como mecanismo de evolução da base; padronização dos dados legados (planilhas, cadernos, conversas) antes da carga inicial.
+13. Alternativas de importação – base única
+==================== END OF SLIDE 19 ====================
+
+=================== START OF SLIDE 20 ===================
+A estrutura do relatório contempla não apenas a descrição da empresa e da solução proposta, mas também a justificativa do projeto, a delimitação do escopo, a metodologia adotada, a modelagem dos processos 'as is' e 'to be', a organização do trabalho em backlog e sprints, os aspectos técnicos de integração e segurança (autenticação de administrador, CSRF, django-decouple para segredos), a validação com o usuário e a análise final dos resultados, limitações e benefícios do projeto.
+14. Elaboração do Relatório e apresentação em slides
+==================== END OF SLIDE 20 ====================
+
+=================== START OF SLIDE 21 ===================
+Para o próximo encontro, cada equipe deverá:
+1. definir o gerente do projeto;
+2. fazer o backlog do projeto (diagnóstico, processo atual, dashboard, ETL);
+3. definição dos times por sprint.
+Cada grupo ficará responsável por uma parte do projeto: diagnóstico, processo atual, processo futuro e estrutura de dados/ETL.
+As atividades entregues em cada encontro comporão a nota final do Projeto Interdisciplinar V
+10. Próximos passos
+==================== END OF SLIDE 21 ====================
+
+=================== START OF SLIDE 22 ===================
+10. Próximos passos
+==================== END OF SLIDE 22 ====================
