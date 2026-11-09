@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liderança e Motivação — Apresentação Acadêmica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ BASE ============ */
+:root{
+  --bg:#070B16; --txt:#E9EEF8; --muted:#9AA7C2;
+  --line:rgba(255,255,255,.10);
+  --v:#8F7FFF; --c:#3EE0CF; --a:#FFB35C; --r:#FF8FB8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg); color:var(--txt); overflow:hidden;
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(1100px 700px at 88% -12%, rgba(124,108,255,.20), transparent 60%),
+    radial-gradient(900px 640px at -8% 112%, rgba(34,211,238,.14), transparent 55%),
+    radial-gradient(700px 500px at 50% 120%, rgba(244,114,182,.07), transparent 60%),
+    linear-gradient(180deg,#070B16,#0A0F1F);
+}
+/* ---- camada de foto por slide ---- */
+.slide-bg{
+  position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-size:cover; background-position:center;
+  opacity:0; transition:opacity 1.1s ease;
+  filter:saturate(.82) contrast(1.06) brightness(.95);
+}
+.slide-bg.on{opacity:var(--bgo,.2)}
+
+/* véu de legibilidade sobre a foto */
+.slide-bg::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg,
+    rgba(7,11,22,.30) 0%,
+    rgba(7,11,22,.62) 58%,
+    rgba(7,11,22,.88) 100%);
+}
+
+/* garante hierarquia: foto < número fantasma < conteúdo */
+.slide .ghost{z-index:1}
+
+/* efeito Ken Burns sutil enquanto o slide está ativo */
+.slide.active .slide-bg{animation:kb 26s ease-out forwards}
+@keyframes kb{from{transform:scale(1.09)}to{transform:scale(1)}}
+
+body::after{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(900px 620px at 50% 42%, #000 25%, transparent 78%);
+  mask-image:radial-gradient(900px 620px at 50% 42%, #000 25%, transparent 78%);
+}
+::selection{background:rgba(124,108,255,.4)}
+
+/* ============ PROGRESSO ============ */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.06);z-index:60}
+.progress i{display:block;height:100%;width:5%;background:linear-gradient(90deg,#7C6CFF,#22D3EE);transition:width .45s ease}
+
+/* ============ SLIDES ============ */
+.slide{
+  position:absolute; inset:0; z-index:1;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transform:translateY(26px) scale(.985);
+  transition:opacity .55s ease, transform .55s cubic-bezier(.2,.7,.2,1), visibility .55s;
+  overflow:hidden;
+}
+.slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
+.ghost{
+  position:absolute; top:4vh; right:3vw; z-index:0; pointer-events:none; user-select:none;
+  font-family:'Sora'; font-weight:800; font-size:clamp(4.5rem,11vw,9rem);
+  line-height:1; color:rgba(255,255,255,.04); letter-spacing:-.02em;
+}
+.wrap{
+  position:relative; z-index:2; width:min(1280px,94vw);
+  max-height:100vh; padding:64px 10px 96px; overflow-y:auto; scrollbar-width:thin;
+}
+.wrap::-webkit-scrollbar{width:8px}
+.wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px}
+
+/* ============ CABEÇALHO ============ */
+.kicker{
+  display:inline-flex; align-items:center; gap:9px;
+  font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:#AEB9D6; background:rgba(124,108,255,.10);
+  border:1px solid rgba(124,108,255,.35); padding:7px 15px; border-radius:999px;
+}
+.kicker .ic{width:15px;height:15px;color:#A79BFF}
+h1{font-family:'Sora';font-weight:800;line-height:1.08;font-size:clamp(2.3rem,5.4vw,4.2rem);letter-spacing:-.02em}
+h2{font-family:'Sora';font-weight:800;line-height:1.14;letter-spacing:-.015em;font-size:clamp(1.55rem,2.7vw,2.5rem);margin:16px 0 10px}
+.grad{background:linear-gradient(90deg,#A79BFF,#4DD8EC);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:clamp(.9rem,1.15vw,1.05rem);max-width:74ch;line-height:1.6}
+.head{margin-bottom:clamp(14px,2.4vh,26px)}
+
+/* ============ GRADES E CARTÕES ============ */
+.grid{display:grid;gap:clamp(12px,1.6vw,22px)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(14px,2vw,26px);align-items:start}
+.card{
+  position:relative;
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+  border:1px solid var(--line); border-radius:18px;
+  padding:clamp(14px,1.8vw,24px); backdrop-filter:blur(6px);
+  transition:transform .25s ease, border-color .25s ease;
+}
+.card:hover{transform:translateY(-3px);border-color:var(--vs,var(--line))}
+.card h3{font-family:'Sora';font-size:clamp(.95rem,1.25vw,1.12rem);font-weight:700;margin:12px 0 8px;line-height:1.3}
+.card p,.card li{color:var(--muted);font-size:clamp(.82rem,1vw,.95rem);line-height:1.55}
+.card ul{list-style:none;display:grid;gap:7px;margin-top:4px}
+.card ul li{padding-left:18px;position:relative}
+.card ul li::before{
+  content:'';position:absolute;left:2px;top:.55em;width:7px;height:7px;border-radius:2px;
+  background:var(--v,#8F7FFF);opacity:.9;
+}
+.card::after{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:3px;background:var(--v,transparent);opacity:.75}
+.acc-v{--v:#8F7FFF;--vb:rgba(143,127,255,.16);--vs:rgba(143,127,255,.42)}
+.acc-c{--v:#3EE0CF;--vb:rgba(62,224,207,.14);--vs:rgba(62,224,207,.40)}
+.acc-a{--v:#FFB35C;--vb:rgba(255,179,92,.14);--vs:rgba(255,179,92,.42)}
+.acc-r{--v:#FF8FB8;--vb:rgba(255,143,184,.14);--vs:rgba(255,143,184,.40)}
+.badge{
+  width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
+  background:var(--vb);border:1px solid var(--vs);color:var(--v);margin-bottom:2px;
+}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tag{
+  display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.05em;
+  padding:5px 12px;border-radius:999px;border:1px solid var(--vs,var(--line));
+  background:var(--vb,rgba(255,255,255,.05));color:var(--v,#AEB9D6);margin-top:10px;
+}
+.callout{
+  display:flex;gap:13px;align-items:flex-start;
+  background:linear-gradient(90deg,rgba(255,179,92,.10),rgba(255,179,92,.03));
+  border:1px solid rgba(255,179,92,.35);border-radius:14px;
+  padding:13px 18px;margin-bottom:18px;color:#FFD9AE;font-size:clamp(.84rem,1vw,.95rem);line-height:1.5;
+}
+.callout .ic{margin-top:2px;color:#FFB35C}
+.callout.blue{background:linear-gradient(90deg,rgba(124,108,255,.12),rgba(124,108,255,.03));border-color:rgba(124,108,255,.4);color:#C9C2FF}
+.callout.blue .ic{color:#A79BFF}
+
+/* ============ FIGURAS / SVG ============ */
+.fig{
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:20px;
+  padding:clamp(10px,1.4vw,20px);box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.fig svg{display:block;width:100%;height:auto;max-height:56vh;margin:0 auto}
+.fig.tall svg{max-height:62vh}
+.fig figcaption{text-align:center;color:#8B98B8;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-top:12px}
+svg text{font-family:'Inter',sans-serif}
+.legend{display:flex;gap:20px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.legend .lg{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:#AEB9D6}
+.legend .lg i{width:14px;height:14px;border-radius:4px;display:inline-block}
+
+/* ============ FÓRMULA ============ */
+.formula{
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  font-family:'Sora';font-weight:700;font-size:clamp(1rem,1.8vw,1.45rem);
+  background:linear-gradient(90deg,rgba(124,108,255,.12),rgba(34,211,238,.10));
+  border:1px solid rgba(124,108,255,.35);border-radius:16px;
+  padding:14px 24px;margin-bottom:18px;
+}
+.formula .op{color:#FFB35C;font-size:1.25em}
+.formula .dim{color:#8B98B8;font-weight:400;font-size:.8em}
+
+/* ============ VS / CHECKLIST / CITAÇÃO ============ */
+.vs-wrap{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,34px)}
+.vs{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;
+  width:58px;height:58px;border-radius:50%;display:grid;place-items:center;
+  font-family:'Sora';font-weight:800;font-size:1.05rem;color:#fff;
+  background:linear-gradient(135deg,#8F7FFF,#3EE0CF);
+  border:4px solid #0A0F1F;box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+.check{list-style:none;display:grid;gap:12px}
+.check li{padding-left:32px;position:relative;color:#DCE4F5;font-size:clamp(.85rem,1.05vw,.98rem);line-height:1.5}
+.check li::before{
+  content:'✓';position:absolute;left:0;top:0;color:var(--v,#3EE0CF);font-weight:800;
+  width:22px;height:22px;border-radius:7px;background:rgba(62,224,207,.12);
+  border:1px solid rgba(62,224,207,.35);display:grid;place-items:center;font-size:.7rem;
+}
+.quote{
+  margin-top:20px;text-align:center;font-family:'Sora';font-weight:600;
+  font-size:clamp(1rem,1.6vw,1.28rem);line-height:1.5;
+  padding:18px 28px;border-radius:16px;
+  border:1px solid rgba(124,108,255,.4);
+  background:linear-gradient(90deg,rgba(124,108,255,.12),rgba(34,211,238,.08));
+}
+.big-n{
+  font-family:'Sora';font-weight:800;font-size:2rem;line-height:1;
+  background:linear-gradient(135deg,#A79BFF,#4DD8EC);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* ============ SLIDE DE TÍTULO ============ */
+.slide.title .wrap{text-align:center}
+.title-kicker{justify-content:center}
+.title-art{position:absolute;right:-90px;top:50%;transform:translateY(-50%);opacity:.55;z-index:1;pointer-events:none;width:min(560px,42vw)}
+.chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.chips span{
+  font-size:.78rem;font-weight:600;letter-spacing:.06em;color:#C6CFE6;
+  border:1px solid var(--line);background:rgba(255,255,255,.04);
+  padding:8px 16px;border-radius:999px;
+}
+.hint{margin-top:34px;font-size:.78rem;color:#7E8BAB;display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+kbd{
+  background:rgba(255,255,255,.08);border:1px solid var(--line);border-bottom-width:2px;
+  border-radius:6px;padding:2px 9px;font-family:inherit;font-size:.72rem;color:#C6CFE6;
+}
+
+/* ============ NAVEGAÇÃO ============ */
+.nav{position:fixed;right:26px;bottom:24px;display:flex;gap:10px;z-index:70}
+.nav button{
+  width:48px;height:48px;border-radius:14px;border:1px solid var(--line);
+  background:rgba(13,18,38,.72);color:#DCE4F5;display:grid;place-items:center;
+  cursor:pointer;backdrop-filter:blur(8px);transition:.25s;
+}
+.nav button:hover{background:rgba(124,108,255,.24);border-color:rgba(124,108,255,.55);transform:translateY(-2px)}
+.nav button:disabled{opacity:.3;cursor:default;transform:none;background:rgba(13,18,38,.72)}
+.nav-ic{width:20px;height:20px}
+.counter{
+  position:fixed;left:26px;bottom:30px;z-index:70;
+  font-size:.8rem;letter-spacing:.06em;color:#AEB9D6;
+  background:rgba(13,18,38,.72);border:1px solid var(--line);
+  padding:9px 17px;border-radius:999px;backdrop-filter:blur(8px);
+}
+.counter b{color:#fff}
+
+/* ============ RESPONSIVO ============ */
+@media (max-width:960px){
+  .g2,.g3,.g4,.split,.vs-wrap{grid-template-columns:1fr}
+  .ghost,.vs,.title-art{display:none}
+  .nav{right:14px;bottom:14px}
+  .counter{left:14px;bottom:16px}
+  .fig svg{max-height:48vh}
+}
+/* bloco prefers-reduced-motion mesclado (antes havia dois blocos) */
+@media (prefers-reduced-motion:reduce){
+  .slide{transition:none}
+  .slide.active .slide-bg{animation:none}
+  .slide-bg{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ====== BIBLIOTECA DE ÍCONES SVG ====== -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2.5 21 7.5 12 12.5 3 7.5"/><polyline points="3 12 12 17 21 12"/><polyline points="3 16.5 12 21.5 21 16.5"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 19.5c.8-3.4 3.2-5 6.2-5s5.4 1.6 6.2 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.8 14.6c2.6.2 4.6 1.6 5.4 4.4"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5C7.5 17.5 3.5 14 3.5 9.8 3.5 7 5.7 4.8 8.4 4.8c1.5 0 2.8.7 3.6 1.9.8-1.2 2.1-1.9 3.6-1.9 2.7 0 4.9 2.2 4.9 5 0 4.2-4 7.7-8.5 10.7z"/></symbol>
+  <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7" ry="2.8"/><path d="M5 5.5v6.5c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8V5.5"/><path d="M5 12v6.5c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8V12"/></symbol>
+  <symbol id="i-eyeslash" viewBox="0 0 24 24"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.6"/><line x1="4.5" y1="4" x2="19.5" y2="20"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M5.5 4.5c4-2.2 7.5 2 11.5 0v8c-4 2-7.5-2-11.5 0"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><polyline points="3 16.5 9 10.5 13 14.5 21 6.5"/><polyline points="15.5 6.5 21 6.5 21 12"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="21 3.5 21 9 15.5 9"/><path d="M20.2 14.5A8.5 8.5 0 1 1 18.6 6l2.4 3"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 7.5h13"/><polyline points="14 3.5 18 7.5 14 11.5"/><path d="M20 16.5H7"/><polyline points="10 12.5 6 16.5 10 20.5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.5l2.4 6.1 6.1 2.4-6.1 2.4L12 19.5l-2.4-6.1L3.5 11l6.1-2.4z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="4.5 12.5 10 18 19.5 6.5"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.2"/><path d="M10.5 12.5L20 3"/><path d="M15.5 7.5l3 3"/><path d="M12.5 10.5l2 2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.5 3v5.4c0 5.2-3.8 8.9-7.5 10.4-3.7-1.5-7.5-5.2-7.5-10.4V5.8z"/><polyline points="8.8 11.6 11.2 14 15.4 9.6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h5.5v18H6a2 2 0 0 1-2-2z"/><path d="M20 5a2 2 0 0 0-2-2h-5.5v18H18a2 2 0 0 0 2-2z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></symbol>
+</svg>
+
+<div class="progress"><i id="progressFill"></i></div>
+
+<main id="deck">
+
+<!-- ==================== SLIDE 1 · CAPA ==================== -->
+<section class="slide title active">
+  <span class="ghost">01</span>
+  <svg class="title-art" viewBox="0 0 560 560" aria-hidden="true">
+    <defs>
+      <linearGradient id="capV" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A79BFF"/><stop offset="1" stop-color="#5B4BE0"/></linearGradient>
+    </defs>
+    <circle cx="280" cy="280" r="215" fill="none" stroke="rgba(143,127,255,.5)" stroke-width="1.5" stroke-dasharray="2 9"/>
+    <circle cx="280" cy="280" r="150" fill="none" stroke="rgba(62,224,207,.45)" stroke-width="1.5" stroke-dasharray="2 7"/>
+    <circle cx="280" cy="280" r="90" fill="none" stroke="rgba(255,179,92,.4)" stroke-width="1.5" stroke-dasharray="2 6"/>
+    <line x1="280" y1="65" x2="280" y2="495" stroke="rgba(255,255,255,.12)"/>
+    <line x1="65" y1="280" x2="495" y2="280" stroke="rgba(255,255,255,.12)"/>
+    <circle cx="280" cy="65" r="5" fill="url(#capV)"/><circle cx="495" cy="280" r="4" fill="#3EE0CF"/>
+    <circle cx="280" cy="495" r="5" fill="#FF8FB8"/><circle cx="65" cy="280" r="4" fill="#FFB35C"/>
+    <circle cx="430" cy="120" r="3.5" fill="#3EE0CF"/><circle cx="120" cy="430" r="3.5" fill="#8F7FFF"/>
+    <circle cx="430" cy="440" r="3" fill="#8F7FFF"/><circle cx="120" cy="120" r="3" fill="#FFB35C"/>
+    <circle cx="280" cy="280" r="12" fill="url(#capV)"/>
+  </svg>
+  <div class="wrap">
+    <span class="kicker title-kicker"><svg class="ic"><use href="#i-compass"/></svg>Apresentação Acadêmica · Gestão de Projetos</span>
+    <h1 style="margin-top:22px">Liderança e<br><span class="grad">Motivação</span></h1>
+    <p class="lead" style="margin:20px auto 0;text-align:center">Como os líderes influenciam e conduzem equipes — e como o processo de
+    motivação, os estilos de liderança e as recompensas determinam a eficácia desse processo.</p>
+    <div class="chips">
+      <span>Liderança</span><span>Contexto</span><span>Estilos</span><span>Recompensas</span><span>Autogestão</span>
+    </div>
+    <div class="hint">
+      <span><kbd>←</kbd> <kbd>→</kbd> navegar</span>
+      <span><kbd>Espaço</kbd> avançar</span>
+      <span><kbd>F</kbd> tela cheia</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 2 · AGENDA ==================== -->
+<section class="slide">
+  <span class="ghost">02</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-book"/></svg>Roteiro</span>
+      <h2>O que vamos <span class="grad">explorar</span></h2>
+    </div>
+    <div class="grid g3">
+      <div class="card acc-v"><span class="big-n">01</span><h3>Liderança</h3><p>Processo, papel, competência e função social.</p></div>
+      <div class="card acc-c"><span class="big-n">02</span><h3>Contexto da liderança</h3><p>Equipe, missão do projeto, competência do líder e conjuntura.</p></div>
+      <div class="card acc-a"><span class="big-n">03</span><h3>Estilos de liderança</h3><p>Estilos básicos e liderança situacional: equipe e ciclo de vida.</p></div>
+      <div class="card acc-r"><span class="big-n">04</span><h3>Carismática × Transacional</h3><p>A classificação baseada na relação de troca entre líder e equipe.</p></div>
+      <div class="card acc-v"><span class="big-n">05</span><h3>Eficácia das recompensas</h3><p>Teoria da Expectativa (Vroom) e Teoria dos Dois Fatores (Herzberg).</p></div>
+      <div class="card acc-c"><span class="big-n">06</span><h3>Substituição da liderança</h3><p>O caminho da liderança desenvolvedora até a autogestão.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 3 · O QUE É LIDERANÇA ==================== -->
+<section class="slide">
+  <span class="ghost">03</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-compass"/></svg>Seção 1 · Fundamentos</span>
+      <h2>O que é <span class="grad">liderança</span>?</h2>
+      <p class="lead">Quatro dimensões complementares de um mesmo fenômeno.</p>
+    </div>
+    <div class="grid g4">
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-compass"/></svg></span>
+        <h3>Processo</h3><p>Influenciar e conduzir pessoas — exercido por quem ocupa as posições de poder.</p>
+      </div>
+      <div class="card acc-c">
+        <span class="badge"><svg class="ic"><use href="#i-layers"/></svg></span>
+        <h3>Papel</h3><p>Um dos papéis ou atribuições dos gerentes, entre as demais funções do cargo.</p>
+      </div>
+      <div class="card acc-a">
+        <span class="badge"><svg class="ic"><use href="#i-zap"/></svg></span>
+        <h3>Competência</h3><p>Atributo que se desenvolve — não nasce pronto com a posição.</p>
+      </div>
+      <div class="card acc-r">
+        <span class="badge"><svg class="ic"><use href="#i-users"/></svg></span>
+        <h3>Função social</h3><p>Uma instituição social que organiza e dá sentido à ação coletiva.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 4 · CONTEXTO (FIGURA 13.1) ==================== -->
+<section class="slide">
+  <span class="ghost">04</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-target"/></svg>Seção 2 · Contexto</span>
+      <h2>Um processo dentro de um <span class="grad">contexto</span></h2>
+      <p class="lead">Os efeitos da liderança resultam da combinação de quatro fatores — nunca do líder isolado.</p>
+    </div>
+    <figure class="fig tall">
+      <svg viewBox="0 0 1180 680" role="img" aria-label="Figura 13.1 — componentes do contexto da liderança">
+        <defs>
+          <linearGradient id="fV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C8FFF"/><stop offset="1" stop-color="#5B4BE0"/></linearGradient>
+          <radialGradient id="fGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7C6CFF" stop-opacity=".38"/><stop offset="1" stop-color="#7C6CFF" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="590" cy="340" r="170" fill="url(#fGlow)"/>
+        <g stroke-width="2" stroke-dasharray="7 8" opacity=".55">
+          <line x1="496" y1="295" x2="380" y2="240" stroke="#8F7FFF"/>
+          <line x1="684" y1="295" x2="800" y2="240" stroke="#FFB35C"/>
+          <line x1="501" y1="395" x2="380" y2="470" stroke="#3EE0CF"/>
+          <line x1="679" y1="395" x2="800" y2="470" stroke="#FF8FB8"/>
+        </g>
+        <circle cx="380" cy="240" r="4.5" fill="#8F7FFF"/><circle cx="800" cy="240" r="4.5" fill="#FFB35C"/>
+        <circle cx="380" cy="470" r="4.5" fill="#3EE0CF"/><circle cx="800" cy="470" r="4.5" fill="#FF8FB8"/>
+        <!-- Liderança do gerente -->
+        <rect x="36" y="28" width="344" height="300" rx="20" fill="rgba(255,255,255,.045)" stroke="#8F7FFF" stroke-opacity=".55" stroke-width="1.5"/>
+        <text x="208" y="66" text-anchor="middle" font-size="18" font-weight="800" fill="#B9AFFF" letter-spacing="1">LIDERANÇA DO GERENTE</text>
+        <line x1="76" y1="84" x2="340" y2="84" stroke="rgba(255,255,255,.12)"/>
+        <g font-size="14.5" fill="#DCE4F5">
+          <circle cx="66" cy="113" r="3.2" fill="#8F7FFF"/><text x="82" y="118">Motivação para liderar</text>
+          <circle cx="66" cy="149" r="3.2" fill="#8F7FFF"/><text x="82" y="154">Aptidões e habilidades de liderança</text>
+          <circle cx="66" cy="185" r="3.2" fill="#8F7FFF"/><text x="82" y="190">Traços de personalidade</text>
+          <circle cx="66" cy="221" r="3.2" fill="#8F7FFF"/><text x="82" y="226">Poder da posição do líder</text>
+          <circle cx="66" cy="257" r="3.2" fill="#8F7FFF"/><text x="82" y="262">Apoio dado ao líder</text>
+        </g>
+        <!-- Conjuntura -->
+        <rect x="800" y="28" width="344" height="300" rx="20" fill="rgba(255,255,255,.045)" stroke="#FFB35C" stroke-opacity=".55" stroke-width="1.5"/>
+        <text x="972" y="66" text-anchor="middle" font-size="18" font-weight="800" fill="#FFD9AE" letter-spacing="1">CONJUNTURA</text>
+        <line x1="840" y1="84" x2="1104" y2="84" stroke="rgba(255,255,255,.12)"/>
+        <g font-size="14.5" fill="#DCE4F5">
+          <circle cx="830" cy="113" r="3.2" fill="#FFB35C"/><text x="846" y="118">Fatores históricos</text>
+          <circle cx="830" cy="149" r="3.2" fill="#FFB35C"/><text x="846" y="154">Fatores organizacionais</text>
+          <circle cx="830" cy="185" r="3.2" fill="#FFB35C"/><text x="846" y="190">Fatores culturais</text>
+        </g>
+        <text x="972" y="240" text-anchor="middle" font-size="13" fill="#93A1C0">Afetam o projeto e a eficácia</text>
+        <text x="972" y="262" text-anchor="middle" font-size="13" fill="#93A1C0">do processo de liderança</text>
+        <!-- Motivações da equipe -->
+        <rect x="36" y="420" width="344" height="232" rx="20" fill="rgba(255,255,255,.045)" stroke="#3EE0CF" stroke-opacity=".55" stroke-width="1.5"/>
+        <text x="208" y="454" text-anchor="middle" font-size="18" font-weight="800" fill="#7FEDE3" letter-spacing="1">MOTIVAÇÕES DA EQUIPE</text>
+        <g>
+          <rect x="60" y="478" width="296" height="38" rx="12" fill="rgba(62,224,207,.10)" stroke="rgba(62,224,207,.35)"/>
+          <text x="208" y="502" text-anchor="middle" font-size="14" fill="#D9FFFA">Intrinsecamente motivados</text>
+          <rect x="60" y="524" width="296" height="38" rx="12" fill="rgba(62,224,207,.10)" stroke="rgba(62,224,207,.35)"/>
+          <text x="208" y="548" text-anchor="middle" font-size="13.5" fill="#D9FFFA">Motivados por interesses calculistas</text>
+          <rect x="60" y="570" width="296" height="38" rx="12" fill="rgba(62,224,207,.10)" stroke="rgba(62,224,207,.35)"/>
+          <text x="208" y="594" text-anchor="middle" font-size="14" fill="#D9FFFA">Alienados</text>
+        </g>
+        <!-- Missão do projeto -->
+        <rect x="800" y="420" width="344" height="232" rx="20" fill="rgba(255,255,255,.045)" stroke="#FF8FB8" stroke-opacity=".55" stroke-width="1.5"/>
+        <text x="972" y="454" text-anchor="middle" font-size="18" font-weight="800" fill="#FFC2D9" letter-spacing="1">MISSÃO DO PROJETO</text>
+        <g>
+          <rect x="824" y="478" width="296" height="38" rx="12" fill="rgba(255,143,184,.10)" stroke="rgba(255,143,184,.35)"/>
+          <text x="972" y="502" text-anchor="middle" font-size="13.5" fill="#FFDFEB">Missão de conteúdo moral</text>
+          <rect x="824" y="524" width="296" height="38" rx="12" fill="rgba(255,143,184,.10)" stroke="rgba(255,143,184,.35)"/>
+          <text x="972" y="548" text-anchor="middle" font-size="13.5" fill="#FFDFEB">Missão de conteúdo calculista</text>
+          <rect x="824" y="570" width="296" height="38" rx="12" fill="rgba(255,143,184,.10)" stroke="rgba(255,143,184,.35)"/>
+          <text x="972" y="594" text-anchor="middle" font-size="13.5" fill="#FFDFEB">Missão de conteúdo alienatório</text>
+        </g>
+        <!-- Núcleo -->
+        <circle cx="590" cy="340" r="104" fill="url(#fV)" stroke="rgba(255,255,255,.4)" stroke-width="1.6"/>
+        <circle cx="590" cy="340" r="88" fill="none" stroke="rgba(255,255,255,.28)" stroke-dasharray="3 7"/>
+        <text x="590" y="310" text-anchor="middle" font-size="10.5" letter-spacing="2.5" fill="rgba(255,255,255,.75)">PROCESSO SOCIAL</text>
+        <text x="590" y="348" text-anchor="middle" font-size="25" font-weight="800" fill="#FFFFFF">LIDERANÇA</text>
+        <text x="590" y="380" text-anchor="middle" font-size="18" font-weight="700" fill="rgba(255,255,255,.9)">NO PROJETO</text>
+      </svg>
+      <figcaption>Figura 13.1 · Liderança é um processo social dentro de um contexto de quatro componentes</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 5 · MOTIVAÇÃO DA EQUIPE ==================== -->
+<section class="slide">
+  <span class="ghost">05</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-users"/></svg>Seção 2.1 · Motivação da equipe</span>
+      <h2>Sem motivação, <span class="grad">não há liderados</span></h2>
+    </div>
+    <div class="callout blue"><svg class="ic"><use href="#i-zap"/></svg><span>Fator que afeta diretamente a capacidade de liderança: <b>sem liderados não há liderança, e sem motivação não há liderados.</b></span></div>
+    <div class="grid g3">
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-heart"/></svg></span>
+        <h3>Intrinsecamente motivados</h3>
+        <p>Movem-se pelo <b>conteúdo intrínseco</b> do projeto — o trabalho em si é o que os atrai.</p>
+        <span class="tag">Aderem ao propósito</span>
+      </div>
+      <div class="card acc-a">
+        <span class="badge"><svg class="ic"><use href="#i-coins"/></svg></span>
+        <h3>Interesses calculistas</h3>
+        <p>Atraídos por <b>recompensa material</b> ou pela perspectiva de uma promoção.</p>
+        <span class="tag">Trocam desempenho</span>
+      </div>
+      <div class="card acc-r">
+        <span class="badge"><svg class="ic"><use href="#i-eyeslash"/></svg></span>
+        <h3>Alienados</h3>
+        <p>Sem vínculo com o propósito nem com a recompensa — exigem atenção especial do líder.</p>
+        <span class="tag">Maior desafio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 6 · MISSÃO DO PROJETO ==================== -->
+<section class="slide">
+  <span class="ghost">06</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-flag"/></svg>Seção 2.2 · Missão do projeto</span>
+      <h2>A missão define o <span class="grad">tipo de motivação</span></h2>
+    </div>
+    <div class="grid g3">
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-heart"/></svg></span>
+        <h3>Missão de conteúdo moral</h3>
+        <ul>
+          <li>Oferece <b>motivação intrínseca</b></li>
+          <li>Voluntários com forte motivação política ou religiosa</li>
+          <li>Projetos de conteúdo ideológico</li>
+          <li>O liderado acredita nos colegas, no valor do projeto ou no gerente</li>
+        </ul>
+        <span class="tag">Produz: motivação intrínseca</span>
+      </div>
+      <div class="card acc-a">
+        <span class="badge"><svg class="ic"><use href="#i-coins"/></svg></span>
+        <h3>Missão de conteúdo calculista</h3>
+        <ul>
+          <li>Produz <b>recompensas materiais</b></li>
+          <li>Fundo utilitário ou organizações de poder utilitário</li>
+          <li>O liderado <b>troca desempenho</b> pela obtenção de recompensa</li>
+        </ul>
+        <span class="tag">Produz: troca por recompensa</span>
+      </div>
+      <div class="card acc-r">
+        <span class="badge"><svg class="ic"><use href="#i-eyeslash"/></svg></span>
+        <h3>Missão de conteúdo alienatório</h3>
+        <ul>
+          <li>Nem conteúdo moral nem recompensa material clara</li>
+          <li>Sem valor percebido pelo liderado</li>
+          <li>Adesão frágil — o maior teste da liderança</li>
+        </ul>
+        <span class="tag">Produz: distanciamento</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 7 · COMPETÊNCIA DO LÍDER ==================== -->
+<section class="slide">
+  <span class="ghost">07</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-trend"/></svg>Seção 2.3 · Competência do líder</span>
+      <h2>Liderança se <span class="grad">desenvolve</span></h2>
+      <p class="lead">Não é um atributo singular inato, mas um conjunto de aptidões que podem se transformar em competências.</p>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 1100 300" role="img" aria-label="Escada de desenvolvimento das competências de liderança">
+        <defs>
+          <linearGradient id="gs" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="1040" y2="0">
+            <stop offset="0" stop-color="#3EE0CF"/><stop offset=".5" stop-color="#22D3EE"/><stop offset="1" stop-color="#7C6CFF"/>
+          </linearGradient>
+        </defs>
+        <path d="M60 40 C 320 6, 780 6, 1032 26" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2" stroke-dasharray="6 8"/>
+        <polygon points="1020,16 1038,26 1022,38" fill="#8F7FFF"/>
+        <g fill="url(#gs)" stroke="rgba(255,255,255,.2)">
+          <rect x="40"  y="190" width="196" height="70"  rx="12"/>
+          <rect x="248" y="155" width="196" height="105" rx="12"/>
+          <rect x="456" y="120" width="196" height="140" rx="12"/>
+          <rect x="664" y="85"  width="196" height="175" rx="12"/>
+          <rect x="872" y="50"  width="196" height="210" rx="12"/>
+        </g>
+        <g text-anchor="middle" font-weight="600" font-size="14" fill="#F2F5FC">
+          <text x="138" y="220">Motivação</text><text x="138" y="240">para liderar</text>
+          <text x="346" y="192">Aptidões e</text><text x="346" y="212">habilidades de</text><text x="346" y="232">liderança</text>
+          <text x="554" y="185">Traços de</text><text x="554" y="205">personalidade</text>
+          <text x="762" y="165">Poder da posição</text><text x="762" y="185">do líder</text>
+          <text x="970" y="150">Apoio dado</text><text x="970" y="170">ao líder</text>
+        </g>
+        <rect x="30" y="268" width="1030" height="4" rx="2" fill="rgba(255,255,255,.15)"/>
+      </svg>
+      <figcaption>Cinco fatores que sustentam a liderança do gerente</figcaption>
+    </figure>
+    <div class="callout" style="margin-top:18px;margin-bottom:0"><svg class="ic"><use href="#i-zap"/></svg><span>Assumir a liderança é um <b>vetor de desenvolvimento das competências</b> — e a motivação para ocupar cargos gerenciais é um fator de sucesso para gerentes de projetos.</span></div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 8 · CONJUNTURA ==================== -->
+<section class="slide">
+  <span class="ghost">08</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-refresh"/></svg>Seção 2.4 · Conjuntura</span>
+      <h2>O momento <span class="grad">importa</span></h2>
+    </div>
+    <div class="split">
+      <div class="card acc-a">
+        <h3 style="margin-top:0">O que compõe a conjuntura</h3>
+        <ul>
+          <li><b>Fatores históricos</b> — marcos e momentos vividos pela organização</li>
+          <li><b>Fatores organizacionais</b> — estrutura, práticas e dinâmica interna</li>
+          <li><b>Fatores culturais</b> — valores e costumes do ambiente</li>
+        </ul>
+        <p style="margin-top:14px">Esses fatores afetam o projeto e a eficácia do processo de liderança.</p>
+        <span class="tag">Podem ser desafios empolgantes para a equipe</span>
+      </div>
+      <figure class="fig">
+        <svg viewBox="0 0 1100 360" role="img" aria-label="Marcos da conjuntura que afetam a liderança">
+          <defs>
+            <linearGradient id="gwave" gradientUnits="userSpaceOnUse" x1="100" y1="0" x2="990" y2="0">
+              <stop offset="0" stop-color="#3EE0CF"/><stop offset=".35" stop-color="#8F7FFF"/>
+              <stop offset=".7" stop-color="#FF8FB8"/><stop offset="1" stop-color="#FFB35C"/>
+            </linearGradient>
+          </defs>
+          <path d="M100 290 C 190 290 250 150 330 150 C 410 150 480 265 560 265 C 640 265 720 120 790 120 C 860 120 940 200 990 200"
+                fill="none" stroke="url(#gwave)" stroke-width="10" opacity=".14" stroke-linecap="round"/>
+          <path d="M100 290 C 190 290 250 150 330 150 C 410 150 480 265 560 265 C 640 265 720 120 790 120 C 860 120 940 200 990 200"
+                fill="none" stroke="url(#gwave)" stroke-width="3.5" stroke-linecap="round"/>
+          <g>
+            <circle cx="100" cy="290" r="12" fill="#0B1224" stroke="#3EE0CF" stroke-width="3"/><circle cx="100" cy="290" r="4" fill="#3EE0CF"/>
+            <circle cx="330" cy="150" r="12" fill="#0B1224" stroke="#8F7FFF" stroke-width="3"/><circle cx="330" cy="150" r="4" fill="#8F7FFF"/>
+            <circle cx="560" cy="265" r="12" fill="#0B1224" stroke="#FF8FB8" stroke-width="3"/><circle cx="560" cy="265" r="4" fill="#FF8FB8"/>
+            <circle cx="790" cy="120" r="12" fill="#0B1224" stroke="#FFB35C" stroke-width="3"/><circle cx="790" cy="120" r="4" fill="#FFB35C"/>
+            <circle cx="990" cy="200" r="12" fill="#0B1224" stroke="#4DD8EC" stroke-width="3"/><circle cx="990" cy="200" r="4" fill="#4DD8EC"/>
+          </g>
+          <g text-anchor="middle" font-size="14" font-weight="600" fill="#E9EEF8">
+            <text x="100" y="332">Lançamento de produtos</text>
+            <text x="330" y="118">Ingresso em novos mercados</text>
+            <text x="560" y="308">Grande transformação organizacional</text>
+            <text x="790" y="88">Fusão</text>
+            <text x="985" y="242">Início de empreendimentos</text>
+          </g>
+        </svg>
+        <figcaption>Momentos que criam contexto para a liderança</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 9 · ESTILOS BÁSICOS (FIGURA 13.2) ==================== -->
+<section class="slide">
+  <span class="ghost">09</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-layers"/></svg>Seção 3 · Estilos de liderança</span>
+      <h2>Dois estilos <span class="grad">básicos</span></h2>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 1180 360" role="img" aria-label="Figura 13.2 — dois estilos básicos de liderança">
+        <defs>
+          <linearGradient id="gmid" gradientUnits="userSpaceOnUse" x1="525" y1="0" x2="655" y2="0">
+            <stop offset="0" stop-color="#8F7FFF"/><stop offset="1" stop-color="#3EE0CF"/>
+          </linearGradient>
+        </defs>
+        <!-- Painel esquerdo: gerente -->
+        <rect x="30" y="40" width="470" height="290" rx="22" fill="rgba(255,143,184,.05)" stroke="rgba(255,143,184,.5)" stroke-width="1.5"/>
+        <text x="265" y="80" text-anchor="middle" font-size="18" font-weight="800" fill="#FF9CC0" letter-spacing="1">LIDERANÇA ORIENTADA</text>
+        <text x="265" y="104" text-anchor="middle" font-size="18" font-weight="800" fill="#FF9CC0" letter-spacing="1">PARA O GERENTE</text>
+        <g>
+          <rect x="52"  y="128" width="205" height="36" rx="12" fill="rgba(255,143,184,.09)" stroke="rgba(255,143,184,.3)"/>
+          <rect x="273" y="128" width="205" height="36" rx="12" fill="rgba(255,143,184,.09)" stroke="rgba(255,143,184,.3)"/>
+          <rect x="52"  y="172" width="205" height="36" rx="12" fill="rgba(255,143,184,.09)" stroke="rgba(255,143,184,.3)"/>
+          <rect x="273" y="172" width="205" height="36" rx="12" fill="rgba(255,143,184,.09)" stroke="rgba(255,143,184,.3)"/>
+          <rect x="52"  y="216" width="205" height="36" rx="12" fill="rgba(255,143,184,.09)" stroke="rgba(255,143,184,.3)"/>
+          <rect x="273" y="216" width="205" height="36" rx="12" fill="rgba(255,143,184,.09)" stroke="rgba(255,143,184,.3)"/>
+        </g>
+        <g text-anchor="middle" font-size="13" fill="#FFD9E7">
+          <text x="154" y="151">Autocrática</text><text x="375" y="151">Orientada para a tarefa</text>
+          <text x="154" y="195">Autoritária</text><text x="375" y="195">Orientada para resultados</text>
+          <text x="154" y="239">Diretiva</text><text x="375" y="239">Centralização</text>
+        </g>
+        <text x="265" y="298" text-anchor="middle" font-size="12.5" fill="#93A1C0">Ênfase: resultados e controle</text>
+        <!-- Painel direito: equipe -->
+        <rect x="680" y="40" width="470" height="290" rx="22" fill="rgba(62,224,207,.05)" stroke="rgba(62,224,207,.5)" stroke-width="1.5"/>
+        <text x="915" y="80" text-anchor="middle" font-size="18" font-weight="800" fill="#7FEDE3" letter-spacing="1">LIDERANÇA ORIENTADA</text>
+        <text x="915" y="104" text-anchor="middle" font-size="18" font-weight="800" fill="#7FEDE3" letter-spacing="1">PARA A EQUIPE</text>
+        <g>
+          <rect x="702" y="128" width="205" height="36" rx="12" fill="rgba(62,224,207,.09)" stroke="rgba(62,224,207,.3)"/>
+          <rect x="923" y="128" width="205" height="36" rx="12" fill="rgba(62,224,207,.09)" stroke="rgba(62,224,207,.3)"/>
+          <rect x="702" y="172" width="205" height="36" rx="12" fill="rgba(62,224,207,.09)" stroke="rgba(62,224,207,.3)"/>
+          <rect x="923" y="172" width="205" height="36" rx="12" fill="rgba(62,224,207,.09)" stroke="rgba(62,224,207,.3)"/>
+          <rect x="702" y="216" width="205" height="36" rx="12" fill="rgba(62,224,207,.09)" stroke="rgba(62,224,207,.3)"/>
+          <rect x="923" y="216" width="205" height="36" rx="12" fill="rgba(62,224,207,.09)" stroke="rgba(62,224,207,.3)"/>
+        </g>
+        <g text-anchor="middle" font-size="13" fill="#D9FFFA">
+          <text x="804" y="151">Democrática</text><text x="1025" y="151">Orientada para pessoas</text>
+          <text x="804" y="195">Participativa</text><text x="1025" y="195">Orientada à consideração</text>
+          <text x="804" y="239">Consultiva</text><text x="1025" y="239">Delegação</text>
+        </g>
+        <text x="915" y="298" text-anchor="middle" font-size="12.5" fill="#93A1C0">Ênfase: pessoas e participação</text>
+        <!-- Contínuo central -->
+        <text x="590" y="150" text-anchor="middle" font-size="10.5" letter-spacing="2" fill="#93A1C0">CONTÍNUO DE ESTILOS</text>
+        <line x1="525" y1="186" x2="655" y2="186" stroke="url(#gmid)" stroke-width="4" stroke-linecap="round"/>
+        <polygon points="525,176 513,186 525,196" fill="#8F7FFF"/>
+        <polygon points="655,176 667,186 655,196" fill="#3EE0CF"/>
+      </svg>
+      <figcaption>Figura 13.2 · Dois estilos básicos de liderança</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 10 · LIDERANÇA SITUACIONAL ==================== -->
+<section class="slide">
+  <span class="ghost">10</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-compass"/></svg>Seção 3.2 · Liderança situacional</span>
+      <h2>O estilo depende da <span class="grad">situação</span></h2>
+      <p class="lead">Líderes podem combinar diversos estilos, caracterizando quatro combinações. Qualquer estilo tem vantagens e desvantagens — depende da situação.</p>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 1100 340" role="img" aria-label="A situação combina equipe e projeto para definir o estilo adequado">
+        <defs>
+          <linearGradient id="gv2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C8FFF"/><stop offset="1" stop-color="#5B4BE0"/></linearGradient>
+          <marker id="mT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#3EE0CF"/></marker>
+          <marker id="mV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8F7FFF"/></marker>
+          <marker id="mW" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#C9D4EC"/></marker>
+        </defs>
+        <rect x="40" y="40" width="300" height="110" rx="18" fill="rgba(62,224,207,.07)" stroke="rgba(62,224,207,.5)" stroke-width="1.5"/>
+        <text x="190" y="76" text-anchor="middle" font-size="16" font-weight="800" fill="#7FEDE3" letter-spacing="1">A EQUIPE</text>
+        <text x="190" y="104" text-anchor="middle" font-size="13" fill="#C9D4EC">Maturidade percebida por</text>
+        <text x="190" y="123" text-anchor="middle" font-size="13" fill="#C9D4EC">motivação e competência</text>
+        <rect x="40" y="190" width="300" height="110" rx="18" fill="rgba(143,127,255,.07)" stroke="rgba(143,127,255,.5)" stroke-width="1.5"/>
+        <text x="190" y="226" text-anchor="middle" font-size="16" font-weight="800" fill="#B9AFFF" letter-spacing="1">O PROJETO</text>
+        <text x="190" y="254" text-anchor="middle" font-size="13" fill="#C9D4EC">Fase do ciclo de vida e</text>
+        <text x="190" y="273" text-anchor="middle" font-size="13" fill="#C9D4EC">natureza da tarefa</text>
+        <path d="M340 95 C 440 92, 470 130, 546 152" fill="none" stroke="#3EE0CF" stroke-width="2.5" marker-end="url(#mT)"/>
+        <path d="M340 245 C 440 248, 470 210, 546 188" fill="none" stroke="#8F7FFF" stroke-width="2.5" marker-end="url(#mV)"/>
+        <polygon points="660,78 772,170 660,262 548,170" fill="url(#gv2)" stroke="rgba(255,255,255,.35)"/>
+        <text x="660" y="150" text-anchor="middle" font-size="17" font-weight="800" fill="#FFFFFF">ESTILO</text>
+        <text x="660" y="176" text-anchor="middle" font-size="17" font-weight="800" fill="#FFFFFF">ADEQUADO</text>
+        <text x="660" y="206" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.8)">4 combinações</text>
+        <line x1="778" y1="170" x2="866" y2="170" stroke="#C9D4EC" stroke-width="2.5" marker-end="url(#mW)"/>
+        <circle cx="968" cy="170" r="78" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.28)"/>
+        <circle cx="968" cy="170" r="64" fill="none" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 7"/>
+        <text x="968" y="158" text-anchor="middle" font-size="15" font-weight="800" fill="#E9EEF8">LIDERANÇA</text>
+        <text x="968" y="180" text-anchor="middle" font-size="15" font-weight="800" fill="#E9EEF8">SITUACIONAL</text>
+        <text x="968" y="204" text-anchor="middle" font-size="11" fill="#93A1C0">equipe + projeto</text>
+      </svg>
+      <figcaption>A situação compreende dois elementos: a equipe e o tipo de projeto</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 11 · MATURIDADE DA EQUIPE ==================== -->
+<section class="slide">
+  <span class="ghost">11</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-users"/></svg>Seção 3.2.1 · A equipe</span>
+      <h2>Maturidade da equipe × <span class="grad">estilo</span></h2>
+      <p class="lead">A maturidade se comprova pela motivação e pela competência dos liderados.</p>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 920 600" role="img" aria-label="Matriz motivação por competência e estilos correspondentes">
+        <line x1="80" y1="520" x2="80" y2="60" stroke="rgba(255,255,255,.25)" stroke-width="2"/>
+        <line x1="80" y1="520" x2="880" y2="520" stroke="rgba(255,255,255,.25)" stroke-width="2"/>
+        <polygon points="74,60 80,44 86,60" fill="rgba(255,255,255,.5)"/>
+        <polygon points="880,514 896,520 880,526" fill="rgba(255,255,255,.5)"/>
+        <text x="480" y="556" text-anchor="middle" font-size="13" letter-spacing="2" fill="#9AA7C2">COMPETÊNCIA →</text>
+        <text x="42" y="290" text-anchor="middle" font-size="13" letter-spacing="2" fill="#9AA7C2" transform="rotate(-90 42 290)">MOTIVAÇÃO →</text>
+        <text x="180" y="548" font-size="11" fill="#7E8BAB">baixa</text>
+        <text x="790" y="548" font-size="11" fill="#7E8BAB">alta</text>
+        <text x="62" y="100" font-size="11" fill="#7E8BAB">alta</text>
+        <text x="62" y="506" font-size="11" fill="#7E8BAB">baixa</text>
+        <!-- Treinar -->
+        <rect x="100" y="90" width="380" height="220" rx="18" fill="rgba(62,224,207,.08)" stroke="rgba(62,224,207,.5)"/>
+        <text x="290" y="136" text-anchor="middle" font-size="21" font-weight="800" fill="#7FEDE3" letter-spacing="1">TREINAR</text>
+        <rect x="165" y="150" width="250" height="26" rx="13" fill="rgba(62,224,207,.12)"/>
+        <text x="290" y="168" text-anchor="middle" font-size="11.5" fill="#7FEDE3">Motivação alta · Competência baixa</text>
+        <text x="290" y="208" text-anchor="middle" font-size="14" fill="#D5EFFB">Ênfase em treinamento,</text>
+        <text x="290" y="230" text-anchor="middle" font-size="14" fill="#D5EFFB">orientação e feedback</text>
+        <!-- Delegar -->
+        <rect x="490" y="90" width="380" height="220" rx="18" fill="rgba(143,127,255,.08)" stroke="rgba(143,127,255,.5)"/>
+        <text x="680" y="136" text-anchor="middle" font-size="21" font-weight="800" fill="#B9AFFF" letter-spacing="1">DELEGAR</text>
+        <rect x="565" y="150" width="230" height="26" rx="13" fill="rgba(143,127,255,.14)"/>
+        <text x="680" y="168" text-anchor="middle" font-size="11.5" fill="#B9AFFF">Motivação alta · Competência alta</text>
+        <text x="680" y="208" text-anchor="middle" font-size="14" fill="#DEDBFF">Praticamente não há</text>
+        <text x="680" y="230" text-anchor="middle" font-size="14" fill="#DEDBFF">necessidade de liderança</text>
+        <!-- Dirigir -->
+        <rect x="100" y="290" width="380" height="220" rx="18" fill="rgba(255,143,184,.08)" stroke="rgba(255,143,184,.5)"/>
+        <text x="290" y="336" text-anchor="middle" font-size="21" font-weight="800" fill="#FF8FB8" letter-spacing="1">DIRIGIR</text>
+        <rect x="155" y="350" width="270" height="26" rx="13" fill="rgba(255,143,184,.14)"/>
+        <text x="290" y="368" text-anchor="middle" font-size="11.5" fill="#FF8FB8">Motivação baixa · Competência baixa</text>
+        <text x="290" y="404" text-anchor="middle" font-size="13.5" fill="#FFDFEB">Todas as funções: treinamento,</text>
+        <text x="290" y="426" text-anchor="middle" font-size="13.5" fill="#FFDFEB">encorajamento, aconselhamento,</text>
+        <text x="290" y="448" text-anchor="middle" font-size="13.5" fill="#FFDFEB">acompanhamento e verificação</text>
+        <!-- Encorajar -->
+        <rect x="490" y="290" width="380" height="220" rx="18" fill="rgba(255,179,92,.08)" stroke="rgba(255,179,92,.5)"/>
+        <text x="680" y="336" text-anchor="middle" font-size="21" font-weight="800" fill="#FFD9AE" letter-spacing="1">ENCORAJAR</text>
+        <rect x="560" y="350" width="240" height="26" rx="13" fill="rgba(255,179,92,.14)"/>
+        <text x="680" y="368" text-anchor="middle" font-size="11.5" fill="#FFD9AE">Motivação baixa · Competência alta</text>
+        <text x="680" y="404" text-anchor="middle" font-size="14" fill="#FFE9CC">Orientação pessoal,</text>
+        <text x="680" y="426" text-anchor="middle" font-size="14" fill="#FFE9CC">encorajamento e incentivos</text>
+      </svg>
+      <figcaption>Quadrantes de maturidade e a ênfase de liderança de cada um</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 12 · CICLO DE VIDA DO PROJETO ==================== -->
+<section class="slide">
+  <span class="ghost">12</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-flag"/></svg>Seção 3.2.2 · Ciclo de vida do projeto</span>
+      <h2>O projeto muda, o estilo <span class="grad">muda junto</span></h2>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 1180 420" role="img" aria-label="Estilos de liderança adequados a cada fase do projeto">
+        <defs>
+          <linearGradient id="gtl" gradientUnits="userSpaceOnUse" x1="70" y1="0" x2="1110" y2="0">
+            <stop offset="0" stop-color="#3EE0CF"/><stop offset=".5" stop-color="#8F7FFF"/><stop offset="1" stop-color="#FF8FB8"/>
+          </linearGradient>
+        </defs>
+        <line x1="70" y1="210" x2="1110" y2="210" stroke="url(#gtl)" stroke-width="5" stroke-linecap="round"/>
+        <g stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-dasharray="4 5">
+          <line x1="140" y1="166" x2="140" y2="192"/>
+          <line x1="455" y1="228" x2="455" y2="254"/>
+          <line x1="770" y1="166" x2="770" y2="192"/>
+          <line x1="1050" y1="228" x2="1050" y2="254"/>
+        </g>
+        <!-- Fase inicial -->
+        <rect x="10" y="26" width="260" height="140" rx="16" fill="rgba(255,255,255,.045)" stroke="rgba(62,224,207,.5)"/>
+        <text x="140" y="64" text-anchor="middle" font-size="16" font-weight="800" fill="#7FEDE3" letter-spacing="1">FASE INICIAL</text>
+        <text x="140" y="96" text-anchor="middle" font-size="13" fill="#C9D4EC">Estilo orientado para a equipe:</text>
+        <text x="140" y="116" text-anchor="middle" font-size="13" fill="#C9D4EC">a participação é necessária.</text>
+        <!-- Execução -->
+        <rect x="325" y="254" width="260" height="140" rx="16" fill="rgba(255,255,255,.045)" stroke="rgba(143,127,255,.5)"/>
+        <text x="455" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#B9AFFF" letter-spacing="1">EXECUÇÃO</text>
+        <text x="455" y="324" text-anchor="middle" font-size="13" fill="#C9D4EC">Delegação: orientação para a</text>
+        <text x="455" y="344" text-anchor="middle" font-size="13" fill="#C9D4EC">equipe, pouca ênfase em resultados.</text>
+        <!-- Restrição de tempo -->
+        <rect x="640" y="26" width="260" height="140" rx="16" fill="rgba(255,179,92,.06)" stroke="rgba(255,179,92,.55)" stroke-dasharray="6 5"/>
+        <text x="770" y="64" text-anchor="middle" font-size="15" font-weight="800" fill="#FFD9AE" letter-spacing="1">RESTRIÇÃO DE TEMPO</text>
+        <text x="770" y="96" text-anchor="middle" font-size="13" fill="#FFE9CC">Um projeto com sérias restrições</text>
+        <text x="770" y="116" text-anchor="middle" font-size="13" fill="#FFE9CC">exigirá liderança diretiva.</text>
+        <!-- Encerramento -->
+        <rect x="915" y="254" width="260" height="140" rx="16" fill="rgba(255,255,255,.045)" stroke="rgba(255,143,184,.5)"/>
+        <text x="1050" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#FF8FB8" letter-spacing="1">ENCERRAMENTO</text>
+        <text x="1050" y="324" text-anchor="middle" font-size="13" fill="#C9D4EC">Volta-se ao gerente: análises</text>
+        <text x="1050" y="344" text-anchor="middle" font-size="13" fill="#C9D4EC">e relatórios finais.</text>
+        <!-- Nós -->
+        <circle cx="140" cy="210" r="18" fill="#0C1226" stroke="#3EE0CF" stroke-width="2.5"/><circle cx="140" cy="210" r="7" fill="#3EE0CF"/>
+        <circle cx="455" cy="210" r="18" fill="#0C1226" stroke="#8F7FFF" stroke-width="2.5"/><circle cx="455" cy="210" r="7" fill="#8F7FFF"/>
+        <circle cx="770" cy="210" r="18" fill="#0C1226" stroke="#FFB35C" stroke-width="2.5"/><circle cx="770" cy="210" r="7" fill="#FFB35C"/>
+        <circle cx="1050" cy="210" r="18" fill="#0C1226" stroke="#FF8FB8" stroke-width="2.5"/><circle cx="1050" cy="210" r="7" fill="#FF8FB8"/>
+      </svg>
+      <figcaption>A tarefa exige maior ou menor envolvimento de equipes em cada fase</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 13 · CARISMÁTICA × TRANSACIONAL ==================== -->
+<section class="slide">
+  <span class="ghost">13</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-swap"/></svg>Seção 4 · Relação de troca</span>
+      <h2>Carismática <span class="grad">×</span> Transacional</h2>
+      <p class="lead">O líder carismático proporciona recompensas morais — satisfação, crescimento pessoal, prestígio social. A recompensa material vem do líder transacional — promoções, aumentos.</p>
+    </div>
+    <div class="vs-wrap">
+      <span class="vs">×</span>
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-spark"/></svg></span>
+        <h3>Liderança carismática</h3>
+        <ul>
+          <li>Orienta os interesses da equipe para a <b>missão do projeto</b></li>
+          <li>Cultiva alto desempenho por meio da <b>motivação intrínseca</b></li>
+          <li>Apela ao <b>desafio intelectual</b></li>
+          <li>Recompensas psicológicas de <b>fundo simbólico</b></li>
+        </ul>
+        <span class="tag">Recompensa moral</span>
+      </div>
+      <div class="card acc-a">
+        <span class="badge"><svg class="ic"><use href="#i-swap"/></svg></span>
+        <h3>Liderança transacional</h3>
+        <ul>
+          <li>Focaliza os <b>interesses pessoais e calculistas</b> da equipe</li>
+          <li>Cultiva o desempenho por meio de <b>recompensas materiais</b></li>
+          <li>Apela às <b>necessidades primárias</b> dos membros da equipe</li>
+        </ul>
+        <span class="tag">Recompensa material</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 14 · EFICÁCIA DAS RECOMPENSAS ==================== -->
+<section class="slide">
+  <span class="ghost">14</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-coins"/></svg>Seção 5 · Eficácia das recompensas</span>
+      <h2>Morais e materiais: <span class="grad">as duas contam</span></h2>
+      <p class="lead">Provavelmente as duas recompensas são importantes para a maioria das pessoas. Duas teorias explicam como elas funcionam.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-target"/></svg></span>
+        <h3>5.1 · Teoria da Expectativa</h3>
+        <p><b>Victor H. Vroom.</b> As pessoas se esforçam para alcançar resultados desejáveis ou evitar indesejáveis. O esforço depende do valor percebido da recompensa e da expectativa de alcançá-la.</p>
+        <span class="tag">Motivação = Expectativa × Valor</span>
+      </div>
+      <div class="card acc-c">
+        <span class="badge"><svg class="ic"><use href="#i-shield"/></svg></span>
+        <h3>5.2 · Teoria dos Dois Fatores</h3>
+        <p><b>Frederick Herzberg.</b> O ambiente de trabalho e o próprio trabalho interagem para produzir comportamentos: fatores <b>motivacionais</b> e fatores <b>higiênicos</b>.</p>
+        <span class="tag">Higiênicos × Motivacionais</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 15 · TEORIA DA EXPECTATIVA (FIGURA 13.5) ==================== -->
+<section class="slide">
+  <span class="ghost">15</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-target"/></svg>Seção 5.1 · Teoria da Expectativa — Vroom</span>
+      <h2>Esforço = <span class="grad">valor × expectativa</span></h2>
+      <p class="lead">Base hedonista: o prazer individual e imediato como supremo bem. A teoria explica a cadeia de causas e efeitos que liga o esforço ao resultado.</p>
+    </div>
+    <div class="formula">
+      <span>MOTIVAÇÃO</span><span class="op">=</span><span>EXPECTATIVA</span><span class="op">×</span><span>VALOR DO RESULTADO</span>
+      <span class="dim">(valor é relativo · expectativa varia de 0 a 1)</span>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 1180 300" role="img" aria-label="Figura 13.5 — esforço, desempenho e recompensa no exemplo da certificação PMP">
+        <rect x="190" y="6" width="800" height="48" rx="14" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.25)" stroke-dasharray="6 6"/>
+        <text x="590" y="36" text-anchor="middle" font-size="14.5" fill="#E9EEF8">Esforço influenciado pelo VALOR atribuído à recompensa e pela EXPECTATIVA de alcançá-la</text>
+        <line x1="250" y1="54" x2="215" y2="80" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <line x1="930" y1="54" x2="965" y2="80" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <rect x="60" y="84" width="300" height="190" rx="20" fill="rgba(143,127,255,.10)" stroke="rgba(143,127,255,.55)" stroke-width="1.5"/>
+        <text x="210" y="122" text-anchor="middle" font-size="11" letter-spacing="2" fill="#B9AFFF">ETAPA 1</text>
+        <text x="210" y="166" text-anchor="middle" font-size="25" font-weight="800" fill="#FFFFFF">ESFORÇO</text>
+        <text x="210" y="200" text-anchor="middle" font-size="13.5" fill="#C9D4EC">Programa de estudos</text>
+        <rect x="440" y="84" width="300" height="190" rx="20" fill="rgba(62,224,207,.10)" stroke="rgba(62,224,207,.55)" stroke-width="1.5"/>
+        <text x="590" y="122" text-anchor="middle" font-size="11" letter-spacing="2" fill="#7FEDE3">ETAPA 2</text>
+        <text x="590" y="166" text-anchor="middle" font-size="25" font-weight="800" fill="#FFFFFF">DESEMPENHO</text>
+        <text x="590" y="200" text-anchor="middle" font-size="13.5" fill="#C9D4EC">Ser aprovado no exame do PMI</text>
+        <rect x="820" y="84" width="300" height="190" rx="20" fill="rgba(255,179,92,.10)" stroke="rgba(255,179,92,.55)" stroke-width="1.5"/>
+        <text x="970" y="122" text-anchor="middle" font-size="11" letter-spacing="2" fill="#FFD9AE">ETAPA 3</text>
+        <text x="970" y="166" text-anchor="middle" font-size="25" font-weight="800" fill="#FFFFFF">RECOMPENSA</text>
+        <text x="970" y="200" text-anchor="middle" font-size="13.5" fill="#C9D4EC">Obter a certificação PMP</text>
+        <line x1="372" y1="179" x2="420" y2="179" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+        <polygon points="420,171 434,179 420,187" fill="rgba(255,255,255,.6)"/>
+        <text x="398" y="163" text-anchor="middle" font-size="11.5" fill="#9AA7C2">produz</text>
+        <line x1="752" y1="179" x2="800" y2="179" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+        <polygon points="800,171 814,179 800,187" fill="rgba(255,255,255,.6)"/>
+        <text x="778" y="163" text-anchor="middle" font-size="11.5" fill="#9AA7C2">resulta em</text>
+      </svg>
+      <figcaption>Figura 13.5 · O esforço depende do valor percebido da recompensa</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 16 · ELEMENTOS DA EXPECTATIVA ==================== -->
+<section class="slide">
+  <span class="ghost">16</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-check"/></svg>Seção 5.1 · Os três elementos</span>
+      <h2>Valor, expectativa e <span class="grad">esforço</span></h2>
+    </div>
+    <div class="grid g3">
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-heart"/></svg></span>
+        <h3>5.1.1 · Valor do resultado</h3>
+        <ul>
+          <li>É o atrativo que desencadeia o <b>esforço inicial</b></li>
+          <li><b>+1</b> produz satisfação · <b>−1</b> insatisfação · <b>0</b> indiferente</li>
+          <li>O valor é <b>relativo</b>: depende da pessoa</li>
+        </ul>
+      </div>
+      <div class="card acc-c">
+        <span class="badge"><svg class="ic"><use href="#i-check"/></svg></span>
+        <h3>5.1.2 · Desempenho → resultado</h3>
+        <ul>
+          <li>Crença de que o desempenho é <b>instrumental</b> para obter o resultado</li>
+          <li>“Acredito que meu desempenho me leva ao resultado?”</li>
+          <li>Escala de <b>0</b> (não acredita) a <b>1</b> (acredita)</li>
+        </ul>
+      </div>
+      <div class="card acc-a">
+        <span class="badge"><svg class="ic"><use href="#i-zap"/></svg></span>
+        <h3>5.1.3 · Esforço → desempenho</h3>
+        <ul>
+          <li>“Meu esforço produzirá o desempenho necessário?”</li>
+          <li>A crença em <b>grandes resultados</b> leva a <b>esforços maiores</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 17 · DOIS FATORES ==================== -->
+<section class="slide">
+  <span class="ghost">17</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-shield"/></svg>Seção 5.2 · Teoria dos Dois Fatores — Herzberg</span>
+      <h2><span class="grad">Motivacionais</span> × <span class="grad">higiênicos</span></h2>
+    </div>
+    <div class="grid g2">
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-zap"/></svg></span>
+        <h3>Fatores motivacionais <span style="color:#8B98B8;font-weight:400;font-size:.8em">— o trabalho em si (intrínsecos)</span></h3>
+        <ul>
+          <li>Conteúdo do trabalho em sintonia com interesses e qualificação</li>
+          <li>Sentido de <b>realização</b> de algo importante</li>
+          <li>Exercício da <b>responsabilidade</b></li>
+          <li><b>Orgulho e prestígio</b> decorrentes da profissão</li>
+          <li><b>Reconhecimento</b> do trabalho bem feito</li>
+        </ul>
+        <span class="tag">Produzem motivação</span>
+      </div>
+      <div class="card acc-c">
+        <span class="badge"><svg class="ic"><use href="#i-shield"/></svg></span>
+        <h3>Fatores higiênicos <span style="color:#8B98B8;font-weight:400;font-size:.8em">— o ambiente (extrínsecos)</span></h3>
+        <ul>
+          <li>Estilo de supervisão do chefe</li>
+          <li>Relações pessoais com os colegas</li>
+          <li>Salário</li>
+          <li>Políticas de administração de pessoal</li>
+          <li>Condições físicas e de segurança do trabalho</li>
+        </ul>
+        <span class="tag">Criam clima saudável</span>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:20px;margin-bottom:0"><svg class="ic"><use href="#i-book"/></svg><span>Nas pesquisas de Herzberg: as pessoas estão, em geral, <b>satisfeitas com os fatores intrínsecos</b> e <b>insatisfeitas com os extrínsecos</b> — gostam mais do trabalho do que do ambiente.</span></div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 18 · SATISFAÇÃO × MOTIVAÇÃO + MASLOW ==================== -->
+<section class="slide">
+  <span class="ghost">18</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-layers"/></svg>Seção 5.3 · Satisfação × motivação</span>
+      <h2>Dimensões <span class="grad">diferentes</span>, não opostas</h2>
+    </div>
+    <div class="split">
+      <div class="card acc-v">
+        <h3 style="margin-top:0">Síntese da teoria</h3>
+        <ul>
+          <li>Satisfação e insatisfação <b>não são polos opostos</b> — são dimensões diferentes</li>
+          <li>“O ambiente produz satisfação (ou não) com o próprio ambiente, <b>mas não motivação</b> para o trabalho”</li>
+          <li>“<b>Apenas o trabalho em si</b> e seu conteúdo produzem motivação”</li>
+          <li>Evidência: artistas, artesãos, cientistas e sacerdotes valorizam mais o trabalho do que as vantagens materiais</li>
+          <li>Motivacionais atendem o <b>topo</b> da hierarquia de Maslow; higiênicos, a <b>base</b></li>
+        </ul>
+      </div>
+      <figure class="fig">
+        <svg viewBox="0 0 780 560" role="img" aria-label="Pirâmide de Maslow com fatores motivacionais no topo e higiênicos na base">
+          <defs>
+            <linearGradient id="gVio" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B3A7FF"/><stop offset="1" stop-color="#6A55E8"/></linearGradient>
+            <linearGradient id="gTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54E6D6"/><stop offset="1" stop-color="#0F97A6"/></linearGradient>
+            <radialGradient id="pglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7C6CFF" stop-opacity=".2"/><stop offset="1" stop-color="#7C6CFF" stop-opacity="0"/></radialGradient>
+          </defs>
+          <ellipse cx="360" cy="300" rx="310" ry="255" fill="url(#pglow)"/>
+          <polygon points="360,60 308,152 412,152" fill="url(#gVio)" stroke="rgba(255,255,255,.28)"/>
+          <polygon points="308,152 412,152 464,244 256,244" fill="url(#gVio)" stroke="rgba(255,255,255,.28)"/>
+          <polygon points="256,244 464,244 516,336 204,336" fill="url(#gTeal)" stroke="rgba(255,255,255,.28)"/>
+          <polygon points="204,336 516,336 568,428 152,428" fill="url(#gTeal)" stroke="rgba(255,255,255,.28)"/>
+          <polygon points="152,428 568,428 620,520 100,520" fill="url(#gTeal)" stroke="rgba(255,255,255,.28)"/>
+          <text x="360" y="44" text-anchor="middle" font-size="14.5" font-weight="600" fill="#DDE5F5">Autorrealização</text>
+          <text x="360" y="206" text-anchor="middle" font-size="15.5" font-weight="700" fill="#FFFFFF">Estima</text>
+          <text x="360" y="298" text-anchor="middle" font-size="15.5" font-weight="700" fill="#FFFFFF">Sociais</text>
+          <text x="360" y="390" text-anchor="middle" font-size="15.5" font-weight="700" fill="#FFFFFF">Segurança</text>
+          <text x="360" y="482" text-anchor="middle" font-size="15.5" font-weight="700" fill="#FFFFFF">Fisiológicas</text>
+          <line x1="650" y1="66" x2="650" y2="246" stroke="#8F7FFF" stroke-width="2" stroke-dasharray="5 6"/>
+          <line x1="650" y1="252" x2="650" y2="516" stroke="#3EE0CF" stroke-width="2" stroke-dasharray="5 6"/>
+          <text x="686" y="156" text-anchor="middle" font-size="12" letter-spacing="3" fill="#B9AFFF" transform="rotate(90 686 156)">MOTIVACIONAIS</text>
+          <text x="686" y="384" text-anchor="middle" font-size="12" letter-spacing="3" fill="#7FEDE3" transform="rotate(90 686 384)">HIGIÊNICOS</text>
+        </svg>
+        <figcaption>Pirâmide de Maslow — base higiênica, topo motivacional</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 19 · ENRIQUECIMENTO DO TRABALHO ==================== -->
+<section class="slide">
+  <span class="ghost">19</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-key"/></svg>Seção 5.4 · Enriquecimento do trabalho</span>
+      <h2>Desenhar trabalho que <span class="grad">motiva</span></h2>
+    </div>
+    <div class="callout"><svg class="ic"><use href="#i-key"/></svg><span>Aplicação prática da teoria dos dois fatores: a técnica de enriquecimento do trabalho consiste em <b>incrementar os fatores motivacionais</b> do cargo.</span></div>
+    <div class="grid g2">
+      <div class="card acc-c">
+        <span class="badge"><svg class="ic"><use href="#i-layers"/></svg></span>
+        <h3>Job enlargement — ampliação de tarefas</h3>
+        <p>Amplia o escopo e a variedade de tarefas do cargo, <b>reduzindo a monotonia</b> do trabalho repetitivo.</p>
+        <span class="tag">+ variedade</span>
+      </div>
+      <div class="card acc-v">
+        <span class="badge"><svg class="ic"><use href="#i-key"/></svg></span>
+        <h3>Empowerment — poder de decisão</h3>
+        <p>Aumenta a <b>autonomia</b> e a responsabilidade sobre as decisões do próprio trabalho.</p>
+        <span class="tag">+ autonomia</span>
+      </div>
+    </div>
+    <div class="quote" style="margin-top:22px">Mais conteúdo no trabalho = mais motivação intrínseca — a satisfação vem do que se faz, não só de onde se faz.</div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 20 · SUBSTITUIÇÃO DA LIDERANÇA ==================== -->
+<section class="slide">
+  <span class="ghost">20</span>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker"><svg class="ic"><use href="#i-users"/></svg>Seção 6 · Substituição da liderança</span>
+      <h2>Do líder à <span class="grad">autogestão</span></h2>
+      <p class="lead">Teoria que explica a redução da importância do líder para a equipe — alinhada à liderança desenvolvedora, que trabalha pelo crescimento da equipe.</p>
+    </div>
+    <div class="grid g2">
+      <ul class="check acc-c">
+        <li>Esclarecer os papéis dos integrantes do grupo</li>
+        <li>Esclarecer os objetivos do projeto</li>
+        <li>Assegurar que todos se conheçam</li>
+        <li>Reforçar a identidade do grupo</li>
+      </ul>
+      <ul class="check acc-v">
+        <li>Criar normas de alto desempenho</li>
+        <li>Selecionar de forma exigente</li>
+        <li>Oferecer treinamento continuado</li>
+        <li>Delegar autoridade</li>
+      </ul>
+    </div>
+    <div class="quote">“A liderança desenvolvedora trabalha para o crescimento da equipe até que ela seja capaz de se autogerir.”</div>
+    <div class="chips" style="margin-top:18px"><span>Obrigado · Perguntas?</span></div>
+  </div>
+</section>
+
+</main>
+
+<!-- ====== CONTADOR + NAVEGAÇÃO ====== -->
+<div class="counter" id="counter">Slide <b>1</b> de 20</div>
+<div class="nav">
+  <button id="prevBtn" aria-label="Slide anterior" disabled>
+    <svg class="nav-ic" viewBox="0 0 24 24"><path d="M14.5 6L8.5 12l6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button id="nextBtn" aria-label="Próximo slide">
+    <svg class="nav-ic" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
+<script>
+(function(){
+  /* ==================================================================
+     MAPA DE FUNDOS — índice 0..19 corresponde ao slide 1..20
+       u  = URL da foto (Unsplash CDN, uso livre)
+       o  = opacidade da foto (0 a 1) — ajuste o "clima" de cada slide
+       null = slide mantém apenas o fundo abstrato original
+     Para uso OFFLINE, troque por arquivos locais: {u:'img/capa.jpg', o:.4}
+  ================================================================== */
+  var U = 'https://images.unsplash.com/';
+  var P = '?auto=format&fit=crop&w=1600&q=70';
+  var BG = [
+    {u:U+'photo-1464822759023-fed622ff2c3b'+P, o:.40},  // 01 · Capa — cume da montanha
+    null,                                                // 02 · Agenda (limpa)
+    {u:U+'photo-1560250097-0b93528c311a'+P,   o:.20},    // 03 · Liderança — executivo
+    null,                                                // 04 · Contexto (Figura 13.1)
+    {u:U+'photo-1522071820081-009f0129c71c'+P, o:.20},   // 05 · Motivação da equipe
+    null,                                                // 06 · Missão do projeto
+    null,                                                // 07 · Competência do líder
+    {u:U+'photo-1469854523086-cc02fe5d8800'+P, o:.20},   // 08 · Conjuntura — estrada
+    null,                                                // 09 · Estilos (Figura 13.2)
+    {u:U+'photo-1529699211952-734e80c4d42b'+P, o:.20},   // 10 · Situacional — bússola
+    null,                                                // 11 · Matriz de maturidade
+    null,                                                // 12 · Ciclo de vida
+    {u:U+'photo-1521791136064-7986c2920216'+P, o:.18},   // 13 · Carismática × Transacional
+    {u:U+'photo-1579621970563-ebec7560ff3e'+P, o:.20},   // 14 · Recompensas
+    null,                                                // 15 · Expectativa (Figura 13.5)
+    null,                                                // 16 · Elementos da teoria
+    {u:U+'photo-1497366811353-6870744d04b2'+P, o:.16},   // 17 · Dois fatores — escritório
+    null,                                                // 18 · Pirâmide de Maslow
+    {u:U+'photo-1434030216411-0b793f4b4173'+P, o:.18},   // 19 · Enriquecimento — anotações
+    {u:U+'photo-1521737711867-e3b97375f902'+P, o:.24}    // 20 · Autogestão — equipe
+  ];
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+
+  /* injeta a camada de fundo em cada slide mapeado */
+  slides.forEach(function(s, i){
+    if(!BG[i]) return;
+    var d = document.createElement('div');
+    d.className = 'slide-bg';
+    d.style.setProperty('--bgo', BG[i].o);
+    d.dataset.src = BG[i].u;
+    s.insertBefore(d, s.firstChild);
+  });
+
+  /* carrega a foto só quando o slide (ou o vizinho) é exibido */
+  function load(i){
+    var s = slides[i]; if(!s) return;
+    var d = s.querySelector('.slide-bg');
+    if(!d || d.dataset.done) return;
+    d.dataset.done = '1';
+    var img = new Image();
+    img.onload = function(){
+      d.style.backgroundImage = 'url("' + d.dataset.src + '")';
+      d.classList.add('on');
+    };
+    img.onerror = function(){ d.remove(); };  // degrada com elegância
+    img.src = d.dataset.src;
+  }
+  function activate(i){ load(i); load(i + 1); }   // pré-carrega o próximo
+
+  /* acopla à navegação existente via observação de classes */
+  var mo = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      if(m.target.classList.contains('active')) activate(slides.indexOf(m.target));
+    });
+  });
+  slides.forEach(function(s){ mo.observe(s, {attributes:true, attributeFilter:['class']}); });
+
+  activate(0);  // capa + pré-carga do slide 2
+})();
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var counter = document.getElementById('counter');
+  var fill    = document.getElementById('progressFill');
+  var prevB   = document.getElementById('prevBtn');
+  var nextB   = document.getElementById('nextBtn');
+  var cur = 0;
+
+  /* correção: guarda contra elementos ausentes (evita crash em update()) */
+  function update(){
+    if(counter) counter.innerHTML = 'Slide <b>' + (cur + 1) + '</b> de ' + slides.length;
+    if(fill)    fill.style.width  = ((cur + 1) / slides.length * 100) + '%';
+    if(prevB)   prevB.disabled = (cur === 0);
+    if(nextB)   nextB.disabled = (cur === slides.length - 1);
+  }
+
+  function go(n){
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    if(n === cur){ update(); return; }
+    slides[cur].classList.remove('active');
+    cur = n;
+    var w = slides[cur].querySelector('.wrap');
+    if(w) w.scrollTop = 0;
+    slides[cur].classList.add('active');
+    update();
+  }
+
+  function next(){ go(cur + 1); }
+  function prev(){ go(cur - 1); }
+
+  /* correção: guarda contra elementos ausentes */
+  if(prevB) prevB.addEventListener('click', function(){ prev(); prevB.blur(); });
+  if(nextB) nextB.addEventListener('click', function(){ next(); nextB.blur(); });
+
+  /* correção: teclado não rouba mais a rolagem interna quando o
+     conteúdo do slide excede a altura da tela */
+  document.addEventListener('keydown', function(e){
+    var k = e.code;
+
+    if(k === 'KeyF'){ toggleFS(); return; }
+    if(k === 'Home'){ e.preventDefault(); go(0); return; }
+    if(k === 'End'){ e.preventDefault(); go(slides.length - 1); return; }
+    if(k === 'Escape' && document.fullscreenElement){ toggleFS(); return; }
+
+    var w = slides[cur] ? slides[cur].querySelector('.wrap') : null;
+    var rolando = w && w.scrollHeight > w.clientHeight;
+
+    if((k === 'ArrowDown' || k === 'ArrowUp') && rolando) return; // deixa rolar o conteúdo
+
+    if(k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === 'Space'){ e.preventDefault(); next(); }
+    else if(k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp'){ e.preventDefault(); prev(); }
+  });
+
+  function toggleFS(){
+    if(document.fullscreenElement){
+      if(document.exitFullscreen) document.exitFullscreen();
+    } else {
+      if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    }
+  }
+
+  /* Suporte a toque (swipe) */
+  var tx = 0, ty = 0;
+  window.addEventListener('touchstart', function(e){
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, {passive:true});
+  window.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)){ if(dx < 0){ next(); } else { prev(); } }
+  }, {passive:true});
+
+  update();
+})();
+</script>
+</body>
+</html>
