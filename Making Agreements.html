@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.4 Work Skills — Making Agreements | Business Partner A2 (IT context)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#fff; --paper:#f4f6f7; --ink:#0d1b2a; --navy:#12314f; --navy-2:#0b2438;
+    --petrol:#0f4c4a; --accent:#c05621; --accent-soft:#e8b04b;
+    --line:#dde3e7; --muted:#5b6b78; --ok:#0f6b4f; --no:#b4552a;
+    --w:1280px; --h:720px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{height:100%;background:#0a1622;color:var(--ink);
+    font-family:"Inter",Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;-webkit-font-smoothing:antialiased}
+  .deck{position:relative;width:var(--w);height:var(--h);max-width:100vw;max-height:100vh}
+  .slide{position:absolute;inset:0;background:var(--white);padding:52px 76px 64px;
+    display:none;flex-direction:column;justify-content:center;overflow:hidden}
+  .slide.active{display:flex}
+  .slide::after{content:"";position:absolute;top:0;left:0;right:0;height:5px;
+    background:linear-gradient(90deg,var(--navy),var(--petrol) 58%,var(--accent))}
+  .slide.dense{padding:40px 76px 58px}
+  .slide.dense h2{font-size:38px}
+  .slide.dense p.lead{font-size:16px;margin-bottom:14px}
+
+  h1,h2,h3,h4{font-family:"Montserrat",Arial,sans-serif;letter-spacing:-.02em;line-height:1.07}
+  h1{font-size:70px;font-weight:800}
+  h2{font-size:44px;font-weight:700;color:var(--navy);max-width:26ch}
+  h3{font-size:19px;font-weight:700}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  .rule{width:60px;height:4px;background:var(--accent);margin:16px 0 22px;border-radius:2px}
+  p,li{font-size:18px;line-height:1.5;color:var(--muted)}
+  .lead{font-size:19px;max-width:66ch;margin-bottom:22px}
+  strong{color:var(--ink);font-weight:600}
+
+  /* ---- cover ---- */
+  .cover{padding:0;justify-content:flex-end}
+  .cover .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.4) contrast(1.06)}
+  .cover .veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,20,32,.95),rgba(18,49,79,.8) 52%,rgba(15,76,74,.5))}
+  .cover .content{position:relative;padding:0 76px 72px;max-width:840px}
+  .cover h1{color:#fff;text-shadow:0 2px 26px rgba(0,0,0,.4)}
+  .cover h1 em{font-style:normal;color:var(--accent-soft)}
+  .cover .sub{margin-top:22px;font-size:15px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+  .cover .sub span{color:var(--accent-soft)}
+  .cover .rule{background:var(--accent-soft);margin-top:26px}
+  .badge-unit{position:absolute;top:44px;left:76px;z-index:3;border:1px solid rgba(255,255,255,.4);
+    border-radius:999px;padding:9px 20px;font-size:12px;font-weight:700;letter-spacing:.18em;color:#fff;text-transform:uppercase}
+
+  /* ---- chips / vocab ---- */
+  .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
+  .chip{border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:18px 18px 16px;
+    display:flex;flex-direction:column;gap:12px}
+  .chip svg{width:28px;height:28px;stroke:var(--petrol);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .chip span{font-size:16px;font-weight:600;color:var(--ink);line-height:1.25}
+
+  /* ---- ordering task ---- */
+  .order{display:grid;gap:10px;margin-top:6px;max-width:74ch}
+  .order li{display:flex;align-items:center;gap:16px;border:1px solid var(--line);border-left:5px solid var(--navy);
+    border-radius:10px;padding:12px 18px;font-size:18px;color:var(--ink);background:#fbfcfd}
+  .order .box{flex:0 0 30px;height:30px;border:2px solid var(--navy);border-radius:7px;display:grid;place-items:center;
+    font-weight:700;font-size:15px;color:var(--navy);background:#fff}
+  .order .box b{opacity:0;transition:.2s}
+  .slide.answers .order .box b{opacity:1}
+
+  /* ---- notes card / gap fill ---- */
+  .notes-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 20px 40px -30px rgba(13,27,42,.5)}
+  .notes-card header{background:var(--navy);color:#fff;padding:12px 22px;font-family:"Montserrat",sans-serif;
+    font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+  .notes-card .rows{padding:16px 22px;display:grid;gap:9px}
+  .nrow{display:grid;grid-template-columns:170px 1fr;gap:14px;align-items:start;font-size:15.5px;line-height:1.45;color:var(--ink)}
+  .nrow dt{font-weight:700;color:var(--navy);font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding-top:2px}
+  .nrow dd{color:#33414d}
+  .gap{display:inline-block;min-width:70px;border-bottom:2px solid var(--accent);margin:0 3px;
+    color:var(--accent);font-weight:700;text-align:center}
+  .gap i{font-style:normal;opacity:0;transition:.2s}
+  .slide.answers .gap i{opacity:1}
+
+  /* ---- matching ---- */
+  .match{display:grid;grid-template-columns:1fr 1fr;gap:14px 30px;margin-top:4px}
+  .match ol,.match ul{list-style:none;display:grid;gap:9px}
+  .match li{display:flex;gap:12px;font-size:15.5px;line-height:1.4;color:var(--ink);
+    border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:#fbfcfd;align-items:flex-start}
+  .match ol li .n,.match ul li .l{flex:0 0 22px;font-weight:800;color:var(--navy);font-family:"Montserrat",sans-serif;font-size:13px}
+  .match ul li .l{color:var(--accent)}
+  .match .key{flex:0 0 26px;text-align:center;font-weight:800;color:var(--ok);opacity:0;transition:.2s}
+  .slide.answers .match .key{opacity:1}
+  .colhead{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+
+  /* ---- phrase cards ---- */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:2px}
+  .cards.one{grid-template-columns:1fr}
+  .pcard{border:1px solid var(--line);border-radius:11px;padding:14px 18px;background:var(--paper);border-left:5px solid var(--petrol)}
+  .pcard .q{font-size:16.5px;color:var(--ink);font-weight:500;line-height:1.35}
+  .pcard .q b{color:var(--petrol);font-weight:700}
+  .pcard .ex{font-size:14px;color:var(--muted);margin-top:6px;font-style:italic}
+
+  /* ---- yes / no ---- */
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:2px}
+  .col{border:1px solid var(--line);border-radius:13px;padding:22px 24px;background:var(--paper);border-top:5px solid var(--ok)}
+  .col.decline{border-top-color:var(--no)}
+  .col h3{display:flex;align-items:center;gap:10px;font-size:16px;text-transform:uppercase;letter-spacing:.1em;color:var(--ok);margin-bottom:16px}
+  .col.decline h3{color:var(--no)}
+  .col h3 svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .col ul{list-style:none;display:grid;gap:11px}
+  .col li{font-size:17px;color:var(--ink);padding-left:15px;border-left:3px solid rgba(15,107,79,.35);line-height:1.4}
+  .col.decline li{border-left-color:rgba(180,85,42,.35)}
+  .col .note{font-size:13.5px;color:var(--muted);margin-top:14px;font-style:italic}
+
+  /* ---- tips ---- */
+  .tips{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .tip{border:1px solid var(--line);border-radius:11px;padding:16px 18px;display:flex;gap:14px;background:#fbfcfd}
+  .tip .num{font-family:"Montserrat",sans-serif;font-weight:800;font-size:22px;color:var(--accent-soft);line-height:1}
+  .tip h4{font-size:15.5px;color:var(--navy);margin-bottom:4px}
+  .tip p{font-size:14px;line-height:1.4}
+
+  /* ---- roleplay ---- */
+  .rp{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .rp .card{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#fff}
+  .rp .card header{background:var(--navy);color:#fff;padding:10px 18px;font-size:12px;font-weight:800;
+    letter-spacing:.16em;text-transform:uppercase;font-family:"Montserrat",sans-serif}
+  .rp .card.b header{background:var(--petrol)}
+  .rp .card .body{padding:14px 18px;display:grid;gap:8px}
+  .rp .card .body li{font-size:14.5px;line-height:1.35;color:#2c3a46;list-style:none;padding-left:16px;position:relative}
+  .rp .card .body li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-size:13px}
+  .rp .card .foot{padding:9px 18px 13px;font-size:12.5px;color:var(--muted);font-style:italic;border-top:1px dashed var(--line)}
+
+  /* ---- checklist ---- */
+  .check{display:grid;gap:10px;max-width:70ch}
+  .check li{display:flex;gap:14px;align-items:center;font-size:17px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:10px;list-style:none}
+  .check .tick{flex:0 0 22px;height:22px;border:2px solid var(--navy);border-radius:5px}
+
+  /* ---- closing ---- */
+  .closing{background:linear-gradient(140deg,var(--navy-2),var(--petrol));color:#fff;justify-content:center}
+  .closing h1{color:#fff;font-size:60px}
+  .closing .sub{font-size:20px;color:rgba(255,255,255,.85);margin-top:14px;max-width:36ch;line-height:1.45}
+  .closing .kicker{color:var(--accent-soft)}
+  .closing .rule{background:var(--accent-soft)}
+  .assess{margin-top:30px;border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:18px 24px;display:inline-flex;
+    gap:16px;align-items:center;width:max-content;background:rgba(255,255,255,.06)}
+  .assess .tick{flex:0 0 24px;height:24px;border:2px solid var(--accent-soft);border-radius:6px}
+  .assess p{color:#fff;font-size:17px;font-weight:600}
+  .assess small{display:block;font-weight:400;color:rgba(255,255,255,.65);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
+  .fmeta{position:absolute;left:76px;right:76px;bottom:34px;display:flex;justify-content:space-between;
+    font-size:12px;letter-spacing:.1em;color:rgba(255,255,255,.55)}
+  .fmeta .mark{font-family:"Montserrat",sans-serif;font-weight:800;color:rgba(255,255,255,.9);letter-spacing:.14em}
+
+  /* ---- chrome ---- */
+  .progress{position:absolute;bottom:0;left:0;height:4px;background:var(--accent);transition:width .28s;z-index:9}
+  .pager{position:absolute;right:22px;bottom:12px;z-index:8;font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--muted)}
+  .slide.cover .pager,.slide.closing .pager{color:rgba(255,255,255,.65)}
+  .hint{position:absolute;left:76px;bottom:12px;z-index:8;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);opacity:.7}
+  .slide.cover .hint,.slide.closing .hint{color:rgba(255,255,255,.55)}
+  .reveal{position:absolute;top:18px;right:22px;z-index:8;border:1px solid var(--line);background:#fff;
+    border-radius:999px;padding:7px 16px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--navy);cursor:pointer;font-family:"Inter",sans-serif;transition:.18s}
+  .reveal:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .slide.answers .reveal{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* ---- notes layer ---- */
+  .notes{position:absolute;left:0;right:0;bottom:0;background:rgba(11,36,56,.97);color:#dfe8ee;
+    padding:16px 76px 20px;font-size:13.5px;line-height:1.5;z-index:7;display:none;border-top:3px solid var(--accent)}
+  body.notes-on .notes{display:block}
+  body.notes-on .slide{padding-bottom:150px}
+  .notes b{color:var(--accent-soft);letter-spacing:.14em;font-size:11px;text-transform:uppercase;display:block;margin-bottom:5px}
+
+  @media print{
+    @page{size:1280px 720px;margin:0}
+    body{display:block;overflow:visible;background:#fff}
+    .deck{width:1280px;height:auto}
+    .slide{position:relative;display:flex!important;width:1280px;height:720px;page-break-after:always;break-after:page}
+    .progress,.hint,.pager,.reveal,.notes{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide cover active">
+  <img class="bg" src="assets/hero.jpg" alt="IT technician talking with a client in an office">
+  <div class="veil"></div>
+  <div class="badge-unit">Unit 2.4 · Work Skills</div>
+  <div class="content">
+    <div class="kicker">Business Partner A2</div>
+    <h1>Making <em>Agreements</em></h1>
+    <div class="rule"></div>
+    <div class="sub">Negotiating an IT support contract <span>|</span> A2–B1</div>
+  </div>
+  <div class="hint">← → to navigate · N for notes</div>
+  <div class="pager">01 / 13</div>
+  <aside class="notes"><b>Teacher</b>Open with the outcome on the next slide. Keep the lesson transactional: by the end, students run a two-minute IT support negotiation and confirm it in writing.</aside>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="kicker">Lesson outcome</div>
+  <h2>By the end, you can close a simple deal</h2>
+  <div class="rule"></div>
+  <ul class="check">
+    <li><span class="tick"></span>Ask clear questions about an IT service.</li>
+    <li><span class="tick"></span>Answer a client's questions politely.</li>
+    <li><span class="tick"></span>Say yes and say no without losing the deal.</li>
+    <li><span class="tick"></span>Confirm details and agree a price.</li>
+  </ul>
+  <p class="lead" style="margin-top:22px"><strong>Lead-in:</strong> Does your company or school have IT support? What do IT technicians do?</p>
+  <div class="pager">02 / 13</div>
+  <aside class="notes"><b>Teacher</b>Elicit real experience first. Most learners have called IT support at some point — use that as the anchor. Do not pre-teach the phrase bank; let the video carry it.</aside>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="kicker">Lead-in vocabulary</div>
+  <h2>What do IT technicians do?</h2>
+  <div class="rule"></div>
+  <div class="chips">
+    <div class="chip"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg><span>set up the computers</span></div>
+    <div class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.2-1.6l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2.8-1.6L13.2 2h-2.4l-.4 2.8a7 7 0 0 0-2.8 1.6l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12"/></svg><span>install the software</span></div>
+    <div class="chip"><svg viewBox="0 0 24 24"><path d="M2.5 9a15 15 0 0 1 19 0M5.5 12.5a10 10 0 0 1 13 0M8.5 16a5.5 5.5 0 0 1 7 0M12 19.5h.01"/></svg><span>check the network</span></div>
+    <div class="chip"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 1 1 .5-7.97A5.5 5.5 0 0 1 18 9.5a3.75 3.75 0 0 1 0 8.5H7z"/></svg><span>back up the files</span></div>
+    <div class="chip"><svg viewBox="0 0 24 24"><path d="M7 8V3h10v5M7 17H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-3"/><rect x="7" y="14" width="10" height="7"/></svg><span>fix the printers</span></div>
+    <div class="chip"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4"/></svg><span>update the systems</span></div>
+  </div>
+  <p class="lead" style="margin-top:18px">Which of these can you do yourself? Which does your company pay someone for?</p>
+  <div class="pager">03 / 13</div>
+  <aside class="notes"><b>Teacher</b>Drill stress: SET UP the comPUters, INstall the SOFTware. Then pair check on the last question — it sets up the negotiation idea that companies pay for what they can't do themselves.</aside>
+</section>
+
+<!-- 4 -->
+<section class="slide dense">
+  <button class="reveal" data-toggle>Show order</button>
+  <div class="kicker">Video 2.4.1 · Listening for structure</div>
+  <h2>Izabela meets Robert. In what order?</h2>
+  <div class="rule"></div>
+  <p class="lead">Izabela is an office manager. Robert owns an IT support company. They discuss a contract. Number the topics <strong>1–5</strong> in the order they speak about them.</p>
+  <ul class="order">
+    <li><span class="box"><b>4</b></span>the cost of the service</li>
+    <li><span class="box"><b>2</b></span>the working days</li>
+    <li><span class="box"><b>1</b></span>the IT tasks</li>
+    <li><span class="box"><b>5</b></span>the description of the office</li>
+    <li><span class="box"><b>3</b></span>the working hours</li>
+  </ul>
+  <div class="pager">04 / 13</div>
+  <aside class="notes"><b>Teacher</b>Play once for gist only. Answer key on the button. Then ask: why does Robert ask about the office AFTER the tasks? Because the number of computers decides hours and price — that logic is the whole lesson.</aside>
+</section>
+
+<!-- 5 -->
+<section class="slide dense">
+  <button class="reveal" data-toggle>Show answers</button>
+  <div class="kicker">Video 2.4.1 · Listening for detail</div>
+  <h2>Complete Robert's notes</h2>
+  <div class="rule"></div>
+  <div class="notes-card">
+    <header>Robert's IT Services — site visit</header>
+    <div class="rows">
+      <div class="nrow"><dt>Computers to set up</dt><dd>reception area, one big office, two <span class="gap"><i>meeting rooms</i></span> on the first floor; one big office, four individual <span class="gap"><i>offices</i></span> on the second floor; a server room; two network printers (one on each floor) and the reception desk.</dd></div>
+      <div class="nrow"><dt>Jobs to do</dt><dd>install the software; set up the computers and <span class="gap"><i>check</i></span> the network; back up the old files.</dd></div>
+      <div class="nrow"><dt>Days of work</dt><dd><span class="gap"><i>Monday to Friday</i></span></dd></div>
+      <div class="nrow"><dt>Hours of work</dt><dd>before <span class="gap"><i>8</i></span> a.m.</dd></div>
+      <div class="nrow"><dt>Total hours</dt><dd><span class="gap"><i>3</i></span> per day, <span class="gap"><i>15</i></span> per week.</dd></div>
+      <div class="nrow"><dt>Agreed price</dt><dd>£<span class="gap"><i>250</i></span> a week, including a charge for the software licences.</dd></div>
+      <div class="nrow"><dt>Equipment</dt><dd>in the cupboard in the <span class="gap"><i>server room</i></span>.</dd></div>
+    </div>
+  </div>
+  <div class="pager">05 / 13</div>
+  <aside class="notes"><b>Teacher</b>Second listen, paused. Highlight that the price is per WEEK and the licences are a separate small charge — two details students routinely miss when negotiating.</aside>
+</section>
+
+<!-- 6 -->
+<section class="slide dense">
+  <button class="reveal" data-toggle>Show key</button>
+  <div class="kicker">Video 2.4.1 · Question and answer</div>
+  <h2>Match the questions with the answers</h2>
+  <div class="rule"></div>
+  <div class="match">
+    <div>
+      <div class="colhead">Questions</div>
+      <ol>
+        <li><span class="n">1</span>What do you want the technician to do, exactly?<span class="key">f</span></li>
+        <li><span class="n">2</span>Can the technician back up the files?<span class="key">d</span></li>
+        <li><span class="n">3</span>Do you want us to repair the printers?<span class="key">e</span></li>
+        <li><span class="n">4</span>How many technicians are there?<span class="key">a</span></li>
+      </ol>
+    </div>
+    <div>
+      <div class="colhead">Answers</div>
+      <ul>
+        <li><span class="l">a</span>It's usually two technicians for an office this size.<span class="key"></span></li>
+        <li><span class="l">b</span>About three hours a day.<span class="key"></span></li>
+        <li><span class="l">c</span>How about next Monday?<span class="key"></span></li>
+        <li><span class="l">d</span>Yes, of course.<span class="key"></span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="colhead">Questions</div>
+      <ol start="5">
+        <li><span class="n">5</span>How much time does the team need?<span class="key">b</span></li>
+        <li><span class="n">6</span>Does the price include the software licences?<span class="key">g</span></li>
+        <li><span class="n">7</span>How much is that?<span class="key">h</span></li>
+        <li><span class="n">8</span>When can the team start?<span class="key">c</span></li>
+      </ol>
+    </div>
+    <div>
+      <div class="colhead">Answers</div>
+      <ul>
+        <li><span class="l">e</span>No, we have a specialist company for the printers.<span class="key"></span></li>
+        <li><span class="l">f</span>Install the software, set up the computers and check the network.<span class="key"></span></li>
+        <li><span class="l">g</span>No, it doesn't. There's a small charge for those.<span class="key"></span></li>
+        <li><span class="l">h</span>It's two hundred and fifty pounds a week.<span class="key"></span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pager">06 / 13</div>
+  <aside class="notes"><b>Teacher</b>Key appears next to each question. Note answers 3 and 6: both are polite refusals that keep the deal alive — the model for slide 10.</aside>
+</section>
+
+<!-- 7 -->
+<section class="slide dense">
+  <div class="kicker">Speaking · Language bank A</div>
+  <h2>Asking about the company's service</h2>
+  <div class="rule"></div>
+  <div class="cards">
+    <div class="pcard"><div class="q">How many <b>technicians / engineers</b> are there?</div></div>
+    <div class="pcard"><div class="q">How about <b>coming before / after</b> 8 o'clock?</div></div>
+    <div class="pcard"><div class="q">Can <b>you / your team</b> do that?</div></div>
+    <div class="pcard"><div class="q">How much <b>time</b> do you need?</div></div>
+    <div class="pcard"><div class="q">Can you <b>provide</b> the software licences?</div></div>
+    <div class="pcard"><div class="q">How much is that <b>for fifteen hours</b> a week?</div></div>
+    <div class="pcard"><div class="q">Does the price <b>include</b> the licences?</div></div>
+    <div class="pcard"><div class="q">When can <b>your team</b> start?</div></div>
+  </div>
+  <p class="lead" style="margin-top:16px">Swap the words in bold: <em>engineers, devices, cables, maintenance, cybersecurity</em>.</p>
+  <div class="pager">07 / 13</div>
+  <aside class="notes"><b>Teacher</b>Model, then drill the intonation of "How about coming before eight?" — it is a suggestion, not a question word order. Keep the substitution drill fast and mechanical.</aside>
+</section>
+
+<!-- 8 -->
+<section class="slide dense">
+  <div class="kicker">Speaking · Language bank B</div>
+  <h2>Asking the client questions</h2>
+  <div class="rule"></div>
+  <div class="cards">
+    <div class="pcard"><div class="q">What do you want <b>the technician</b> to do, exactly?</div></div>
+    <div class="pcard"><div class="q">How many <b>days / hours</b> do you need the service?</div></div>
+    <div class="pcard"><div class="q">What time do you want <b>the team</b> to come?</div></div>
+    <div class="pcard"><div class="q">Is there a place for the <b>equipment / server</b>?</div></div>
+    <div class="pcard"><div class="q">How about <b>on Monday</b>?</div></div>
+    <div class="pcard"><div class="q">Is <b>three hours a day</b> enough for you?</div></div>
+  </div>
+  <p class="lead" style="margin-top:16px">Notice the pattern: <strong>What do you want + person + to do?</strong> · <strong>How many + hours + do you need?</strong></p>
+  <div class="pager">08 / 13</div>
+  <aside class="notes"><b>Teacher</b>Point out that these questions put the number or time in a fixed slot. Then have students build three new questions for the laptop setup situation before moving on.</aside>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="kicker">Responding</div>
+  <h2>Saying yes and saying no</h2>
+  <div class="rule"></div>
+  <div class="cols2">
+    <div class="col">
+      <h3><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg>Saying yes</h3>
+      <ul>
+        <li>Yes, we can.</li>
+        <li>Yes, it does.</li>
+        <li>Yes, that's fine.</li>
+        <li>Yes, that's right.</li>
+        <li>Yes, of course.</li>
+      </ul>
+      <p class="note">Short, clear, then move to the next detail.</p>
+    </div>
+    <div class="col decline">
+      <h3><svg viewBox="0 0 24 24"><path d="M7 12h10"/></svg>Saying no</h3>
+      <ul>
+        <li>No, we can't. I'm sorry.</li>
+        <li>No, it doesn't. I'm sorry.</li>
+        <li>No, we don't — we have a specialist company.</li>
+        <li>No, but we can offer something else.</li>
+      </ul>
+      <p class="note">Always add a reason or an alternative. Never just "No".</p>
+    </div>
+  </div>
+  <div class="pager">09 / 13</div>
+  <aside class="notes"><b>Teacher</b>Insist on the apology and the alternative. Drill the pair as a chain: A asks, B refuses with a reason, A accepts the alternative. Two minutes, then swap.</aside>
+</section>
+
+<!-- 10 -->
+<section class="slide dense">
+  <div class="kicker">Strategy</div>
+  <h2>From "no" to "not yet"</h2>
+  <div class="rule"></div>
+  <p class="lead">A refusal is not the end of the meeting. Keep the deal alive.</p>
+  <div class="tips">
+    <div class="tip"><div class="num">01</div><div><h4>Refuse the item, not the client</h4><p>"No, we can't repair the printers — but we can check the network."</p></div></div>
+    <div class="tip"><div class="num">02</div><div><h4>Ask a question instead</h4><p>"What if we try two hours a day instead of three?"</p></div></div>
+    <div class="tip"><div class="num">03</div><div><h4>Give the reason</h4><p>"That might be difficult — the licences cost extra."</p></div></div>
+    <div class="tip"><div class="num">04</div><div><h4>Confirm what you both agree</h4><p>"So, the setup and the backups — yes. The printers — no."</p></div></div>
+  </div>
+  <div class="pager">10 / 13</div>
+  <aside class="notes"><b>Teacher</b>Board the four moves. Then upgrade: take one flat "No" from the class and rebuild it together into a counter-offer.</aside>
+</section>
+
+<!-- 11 -->
+<section class="slide dense">
+  <div class="kicker">Roleplay 1 · IT support contract</div>
+  <h2>Negotiate the contract</h2>
+  <div class="rule"></div>
+  <div class="rp">
+    <div class="card">
+      <header>Student A · Robert's IT Services</header>
+      <div class="body">
+        <li>Ask how many computers the office has.</li>
+        <li>Offer two technicians, three hours a day.</li>
+        <li>Quote £250 a week. Software licences are a small extra charge.</li>
+        <li>Say no to repairing the printers — specialist company.</li>
+        <li>Agree a start date. Confirm the details in writing.</li>
+      </div>
+      <div class="foot">You want the contract. Be flexible on hours, not on price.</div>
+    </div>
+    <div class="card b">
+      <header>Student B · Office manager</header>
+      <div class="body">
+        <li>Describe the office: reception, two offices, a server room, two printers.</li>
+        <li>List the IT tasks you need.</li>
+        <li>Ask how many technicians and how much time they need.</li>
+        <li>Ask if the price includes the licences. Ask for a lower price.</li>
+        <li>Ask when they can start.</li>
+      </div>
+      <div class="foot">Your budget is tight. You still need the service.</div>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:14px">Three minutes. Then swap roles.</p>
+  <div class="pager">11 / 13</div>
+  <aside class="notes"><b>Teacher</b>Circulate and note two good refusals and one counter-offer to replay for the class. Do not correct mid-flow — collect and fix afterwards.</aside>
+</section>
+
+<!-- 12 -->
+<section class="slide dense">
+  <div class="kicker">Roleplay 2 · New laptops for the team</div>
+  <h2>On-site or remote setup?</h2>
+  <div class="rule"></div>
+  <div class="rp">
+    <div class="card">
+      <header>Student A · You need the setup</header>
+      <div class="body">
+        <li>Ask if they set up laptops on-site or remotely.</li>
+        <li>Say how many laptops it is for.</li>
+        <li>Say the day and time of the setup.</li>
+        <li>Ask how many technicians they send.</li>
+        <li>Ask if the team can transfer the old files too.</li>
+        <li>Ask if they provide chargers and adapters.</li>
+        <li>Ask how much they charge.</li>
+      </div>
+      <div class="foot">It's a Friday morning setup. About 25 laptops.</div>
+    </div>
+    <div class="card b">
+      <header>Student B · IT services company</header>
+      <div class="body">
+        <li>Answer: on-site or remote setup.</li>
+        <li>Ask how many laptops it's for.</li>
+        <li>Ask the day and time.</li>
+        <li>Say how many technicians you send for each option.</li>
+        <li>Ask if there is good Wi-Fi at the office.</li>
+        <li>Answer about chargers and adapters.</li>
+        <li>Give your price per laptop.</li>
+      </div>
+      <div class="foot">On-site setup: 3 technicians. Remote setup: 1 technician. Chargers and adapters included.</div>
+    </div>
+  </div>
+  <div class="pager">12 / 13</div>
+  <aside class="notes"><b>Teacher</b>Run as a mingle with real notebooks — students write the order down as they speak, like Robert does. That makes the listening task authentic.</aside>
+</section>
+
+<!-- 13 -->
+<section class="slide closing">
+  <div class="kicker">Self-assessment</div>
+  <h1>Can you make a deal?</h1>
+  <div class="rule"></div>
+  <p class="sub">If you can ask, refuse politely and confirm, you can.</p>
+  <div class="assess">
+    <span class="tick"></span>
+    <p><small>Now tick the box</small>I can make a simple business agreement.</p>
+  </div>
+  <div class="fmeta">
+    <span class="mark">BUSINESS PARTNER A2</span>
+    <span>Unit 2.4 · Work Skills · Making Agreements</span>
+  </div>
+  <div class="hint">Questions?</div>
+  <div class="pager">13 / 13</div>
+  <aside class="notes"><b>Teacher</b>Close with the tick — honest self-assessment, not applause. Homework: write the confirmation email from slide 5, three lines, all details included.</aside>
+</section>
+
+<div class="progress" id="progress"></div>
+</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const bar=document.getElementById('progress');
+  let i=0;
+
+  function show(n){
+    i=Math.min(Math.max(n,0),slides.length-1);
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    bar.style.width=((i+1)/slides.length*100)+'%';
+  }
+  function toggleAns(el){
+    const s=el.closest('.slide');
+    s.classList.toggle('answers');
+    el.textContent=s.classList.contains('answers')
+      ? (el.dataset.off||'Hide answers')
+      : (el.dataset.orig||'Show answers');
+  }
+
+  document.querySelectorAll('.reveal').forEach(b=>{
+    b.dataset.orig=b.textContent;
+    b.dataset.off='Hide answers';
+    b.addEventListener('click',e=>{e.stopPropagation();toggleAns(b)});
+  });
+
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(i+1)}
+    if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1)}
+    if(e.key==='Home')show(0);
+    if(e.key==='End')show(slides.length-1);
+    if(e.key.toLowerCase()==='n')document.body.classList.toggle('notes-on');
+    if(e.key.toLowerCase()==='a'){const r=slides[i].querySelector('.reveal');if(r)toggleAns(r)}
+  });
+
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.reveal'))return;
+    show(e.clientX<window.innerWidth*0.22?i-1:i+1);
+  });
+
+  let x0=null;
+  addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+  addEventListener('touchend',e=>{
+    if(x0===null)return;
+    const d=e.changedTouches[0].clientX-x0;
+    if(Math.abs(d)>50)show(d<0?i+1:i-1);
+    x0=null;
+  });
+
+  show(0);
+</script>
+</body>
+</html>
